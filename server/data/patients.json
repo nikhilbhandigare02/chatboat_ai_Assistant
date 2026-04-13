@@ -1,0 +1,70 @@
+{
+  "patients": [
+    {
+      "id": "P001",
+      "name": "Rajesh Kumar",
+      "policyId": "POL001",
+      "plan": "Gold Plan",
+      "age": 42,
+      "email": "rajesh.kumar@email.com",
+      "phone": "+919028097674",
+      "coverageLimit": 500000,
+      "policyStartDate": "2024-06-15"
+    },
+    {
+      "id": "P002",
+      "name": "Priya Sharma",
+      "policyId": "POL002",
+      "plan": "Platinum Plan",
+      "age": 35,
+      "email": "priya.sharma@email.com",
+      "phone": "+919876543211",
+      "coverageLimit": 1000000,
+      "policyStartDate": "2023-03-20"
+    },
+    {
+      "id": "P003",
+      "name": "Amit Patel",
+      "policyId": "POL003",
+      "plan": "Silver Plan",
+      "age": 28,
+      "email": "amit.patel@email.com",
+      "phone": "+919876543212",
+      "coverageLimit": 300000,
+      "policyStartDate": "2025-01-10"
+    },
+    {
+      "id": "P004",
+      "name": "Sneha Gupta",
+      "policyId": "POL004",
+      "plan": "Family Platinum Plan",
+      "age": 38,
+      "email": "sneha.gupta@email.com",
+      "phone": "+919876543213",
+      "coverageLimit": 1500000,
+      "policyStartDate": "2022-11-05"
+    },
+    {
+      "id": "P005",
+      "name": "Vikram Singh",
+      "policyId": "POL005",
+      "plan": "Gold Plan",
+      "age": 55,
+      "email": "vikram.singh@email.com",
+      "phone": "+919876543214",
+      "coverageLimit": 500000,
+      "policyStartDate": "2021-07-18"
+    },
+    {
+      "id": "P006",
+      "name": "Rahul",
+      "policyId": "POL006",
+      "plan": "Silver Plan",
+      "age": 28,
+      "email": "rahul@email.com",
+      "phone": "7620593008",
+      "coverageLimit": 300000,
+      "policyStartDate": "2025-01-10"
+    }
+  ]
+}

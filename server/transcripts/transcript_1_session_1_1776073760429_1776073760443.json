@@ -1,0 +1,34 @@
+{
+  "sessionId": "session_1_1776073760429",
+  "userId": "1",
+  "userName": "Amit",
+  "channelType": "call",
+  "completedAt": "2026-04-13T09:49:20.443Z",
+  "bookingDetails": {
+    "flow": "home",
+    "center": null,
+    "time": "8:00 AM"
+  },
+  "transcript": [
+    {
+      "role": "assistant",
+      "content": "Hi Amit, welcome to MedInsure. We need to schedule your mandatory medical check‑up. Would you like a doctor to visit your home, or would you prefer to go to a diagnostic center?",
+      "timestamp": "2026-04-13T09:49:20.431Z"
+    },
+    {
+      "role": "user",
+      "content": "home visit",
+      "timestamp": "2026-04-13T09:49:20.433Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Great — a home visit it is. What time in the morning works best for you? You can say something like seven am, eight am, or nine am.",
+      "timestamp": "2026-04-13T09:49:20.435Z"
+    },
+    {
+      "role": "user",
+      "content": "8 am",
+      "timestamp": "2026-04-13T09:49:20.435Z"
+    }
+  ]
+}

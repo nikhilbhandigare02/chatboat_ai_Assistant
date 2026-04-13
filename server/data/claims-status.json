@@ -1,0 +1,83 @@
+{
+  "claims": {
+    "POL001": [
+      {
+        "claimId": "CLM-2026-001",
+        "policyId": "POL001",
+        "patientName": "Rajesh Kumar",
+        "status": "approved",
+        "dateSubmitted": "2026-02-15",
+        "dateProcessed": "2026-02-20",
+        "claimAmount": 15000,
+        "approvedAmount": 13500,
+        "reason": "Routine checkup and blood tests",
+        "hospitalName": "Apollo Hospital"
+      },
+      {
+        "claimId": "CLM-2026-015",
+        "policyId": "POL001",
+        "patientName": "Rajesh Kumar",
+        "status": "pending",
+        "dateSubmitted": "2026-03-10",
+        "claimAmount": 8500,
+        "reason": "X-ray and consultation",
+        "hospitalName": "Max Healthcare"
+      }
+    ],
+    "POL002": [
+      {
+        "claimId": "CLM-2026-008",
+        "policyId": "POL002",
+        "patientName": "Priya Sharma",
+        "status": "approved",
+        "dateSubmitted": "2026-01-20",
+        "dateProcessed": "2026-01-28",
+        "claimAmount": 45000,
+        "approvedAmount": 45000,
+        "reason": "Minor surgery - appendix removal",
+        "hospitalName": "Fortis Hospital"
+      }
+    ],
+    "POL003": [
+      {
+        "claimId": "CLM-2026-012",
+        "policyId": "POL003",
+        "patientName": "Amit Patel",
+        "status": "rejected",
+        "dateSubmitted": "2026-02-05",
+        "dateProcessed": "2026-02-12",
+        "claimAmount": 25000,
+        "approvedAmount": 0,
+        "reason": "Cosmetic procedure - not covered",
+        "hospitalName": "Lilavati Hospital",
+        "rejectionReason": "Cosmetic procedures are not covered under your policy"
+      }
+    ],
+    "POL004": [
+      {
+        "claimId": "CLM-2026-019",
+        "policyId": "POL004",
+        "patientName": "Sneha Gupta",
+        "status": "under_review",
+        "dateSubmitted": "2026-03-18",
+        "claimAmount": 120000,
+        "reason": "Kidney stone treatment and hospitalization",
+        "hospitalName": "AIIMS Delhi"
+      }
+    ],
+    "POL005": [
+      {
+        "claimId": "CLM-2026-003",
+        "policyId": "POL005",
+        "patientName": "Vikram Singh",
+        "status": "approved",
+        "dateSubmitted": "2026-01-10",
+        "dateProcessed": "2026-01-18",
+        "claimAmount": 8000,
+        "approvedAmount": 7200,
+        "reason": "Dental treatment",
+        "hospitalName": "Manipal Hospital"
+      }
+    ]
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "payments": {
+    "POL001": {
+      "premium": {
+        "monthly": 2500,
+        "annual": 28000,
+        "planType": "Gold Plan"
+      },
+      "paymentHistory": [
+        {
+          "id": "PAY-2026-001",
+          "date": "2026-01-01",
+          "amount": 2500,
+          "status": "paid",
+          "method": "Credit Card",
+          "dueDate": "2026-01-01"
+        },
+        {
+          "id": "PAY-2026-002",
+          "date": "2026-02-01",
+          "amount": 2500,
+          "status": "paid",
+          "method": "UPI",
+          "dueDate": "2026-02-01"
+        },
+        {
+          "id": "PAY-2026-003",
+          "date": "2026-03-01",
+          "amount": 2500,
+          "status": "paid",
+          "method": "Net Banking",
+          "dueDate": "2026-03-01"
+        },
+        {
+          "id": "PAY-2026-004",
+          "amount": 2500,
+          "status": "due",
+          "dueDate": "2026-04-01"
+        }
+      ]
+    },
+    "POL002": {
+      "premium": {
+        "monthly": 3500,
+        "annual": 40000,
+        "planType": "Platinum Plan"
+      },
+      "paymentHistory": [
+        {
+          "id": "PAY-2026-010",
+          "date": "2026-01-05",
+          "amount": 3500,
+          "status": "paid",
+          "method": "Auto Debit",
+          "dueDate": "2026-01-05"
+        },
+        {
+          "id": "PAY-2026-011",
+          "date": "2026-02-05",
+          "amount": 3500,
+          "status": "paid",
+          "method": "Auto Debit",
+          "dueDate": "2026-02-05"
+        },
+        {
+          "id": "PAY-2026-012",
+          "date": "2026-03-05",
+          "amount": 3500,
+          "status": "paid",
+          "method": "Auto Debit",
+          "dueDate": "2026-03-05"
+        }
+      ]
+    },
+    "POL003": {
+      "premium": {
+        "monthly": 1800,
+        "annual": 20000,
+        "planType": "Silver Plan"
+      },
+      "paymentHistory": [
+        {
+          "id": "PAY-2026-020",
+          "date": "2026-01-15",
+          "amount": 1800,
+          "status": "paid",
+          "method": "Credit Card",
+          "dueDate": "2026-01-15"
+        },
+        {
+          "id": "PAY-2026-021",
+          "amount": 1800,
+          "status": "overdue",
+          "dueDate": "2026-02-15"
+        }
+      ]
+    },
+    "POL004": {
+      "premium": {
+        "monthly": 4200,
+        "annual": 48000,
+        "planType": "Family Platinum Plan"
+      },
+      "paymentHistory": [
+        {
+          "id": "PAY-2026-030",
+          "date": "2026-01-01",
+          "amount": 4200,
+          "status": "paid",
+          "method": "Net Banking",
+          "dueDate": "2026-01-01"
+        },
+        {
+          "id": "PAY-2026-031",
+          "date": "2026-02-01",
+          "amount": 4200,
+          "status": "paid",
+          "method": "Net Banking",
+          "dueDate": "2026-02-01"
+        },
+        {
+          "id": "PAY-2026-032",
+          "date": "2026-03-01",
+          "amount": 4200,
+          "status": "paid",
+          "method": "UPI",
+          "dueDate": "2026-03-01"
+        }
+      ]
+    },
+    "POL005": {
+      "premium": {
+        "monthly": 2200,
+        "annual": 25000,
+        "planType": "Gold Plan"
+      },
+      "paymentHistory": [
+        {
+          "id": "PAY-2026-040",
+          "date": "2026-01-10",
+          "amount": 2200,
+          "status": "paid",
+          "method": "Debit Card",
+          "dueDate": "2026-01-10"
+        },
+        {
+          "id": "PAY-2026-041",
+          "date": "2026-02-10",
+          "amount": 2200,
+          "status": "paid",
+          "method": "UPI",
+          "dueDate": "2026-02-10"
+        },
+        {
+          "id": "PAY-2026-042",
+          "date": "2026-03-10",
+          "amount": 2200,
+          "status": "paid",
+          "method": "UPI",
+          "dueDate": "2026-03-10"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "faqs": [
+    {
+      "id": "faq-1",
+      "question": "What is covered under my health insurance?",
+      "keywords": ["coverage", "covered", "what is included", "benefits"],
+      "answer": "Your health insurance covers hospitalization expenses, pre and post-hospitalization care (60 days before and 90 days after), day care procedures, ambulance charges up to ₹2000 per claim, and annual health checkups. Coverage limits vary by plan - Gold Plan covers up to ₹5 lakhs, Platinum covers up to ₹10 lakhs annually."
+    },
+    {
+      "id": "faq-2",
+      "question": "How do I file a claim?",
+      "keywords": ["file claim", "submit claim", "claim process", "how to claim"],
+      "answer": "To file a claim, you can: 1) For cashless claims - inform the hospital at admission and they'll coordinate directly with us. 2) For reimbursement - submit your original bills, discharge summary, and prescription within 30 days via our mobile app, website, or by visiting our office. Claims are typically processed within 7-10 business days."
+    },
+    {
+      "id": "faq-3",
+      "question": "What is the waiting period?",
+      "keywords": ["waiting period", "when can I claim", "coverage start"],
+      "answer": "Initial waiting period is 30 days for illnesses and accidents are covered from day one. Pre-existing diseases have a 2-4 year waiting period depending on your plan. Specific diseases like hernia, cataract have a 2-year waiting period. Maternity benefits are available after 9 months."
+    },
+    {
+      "id": "faq-4",
+      "question": "How do I add a family member?",
+      "keywords": ["add member", "add family", "include dependent", "add spouse", "add child"],
+      "answer": "You can add family members during policy renewal or within 30 days of marriage/childbirth. Submit a family floater upgrade request through our portal along with age proof and photos. Premium will be adjusted based on the added member's age. Coverage starts immediately after approval and premium payment."
+    },
+    {
+      "id": "faq-5",
+      "question": "What is not covered?",
+      "keywords": ["exclusions", "not covered", "what is excluded"],
+      "answer": "Exclusions include: cosmetic surgery, dental treatment (unless due to accident), congenital diseases for first 2 years, self-inflicted injuries, treatment related to alcohol/drug abuse, war injuries, and experimental treatments. Pre-existing diseases are excluded for the waiting period mentioned in your policy document."
+    },
+    {
+      "id": "faq-6",
+      "question": "How do I renew my policy?",
+      "keywords": ["renewal", "renew policy", "extend policy"],
+      "answer": "Your policy can be renewed online via our website or mobile app 30 days before expiry. You'll receive renewal reminders via email and SMS. We offer a 30-day grace period, but claims during this period are not covered until premium is paid. No medical tests required for renewal if done within grace period."
+    },
+    {
+      "id": "faq-7",
+      "question": "What is co-payment?",
+      "keywords": ["copay", "co-payment", "copayment", "share payment"],
+      "answer": "Co-payment means you share a percentage of the claim amount. For senior citizens (60+), there's typically a 20% co-pay. For treatment at non-network hospitals, co-pay can be 30%. This helps reduce premium costs. Your specific co-pay details are mentioned in your policy schedule."
+    },
+    {
+      "id": "faq-8",
+      "question": "How do I check network hospitals?",
+      "keywords": ["network hospital", "cashless hospital", "empanelled hospital", "hospital list"],
+      "answer": "You can view our network hospitals by: 1) Visiting our website and using the hospital locator. 2) Using our mobile app's 'Find Hospital' feature. 3) Calling our helpline. We have over 8000+ network hospitals across India. For cashless treatment, always verify the hospital is in our network before admission."
+    },
+    {
+      "id": "faq-9",
+      "question": "Can I port my insurance?",
+      "keywords": ["port", "porting", "switch insurer", "change company"],
+      "answer": "Yes, you can port your existing health insurance to us without losing benefits like waiting period credits and no-claim bonus. Submit porting request 45 days before current policy expiry with your existing policy documents. We'll verify your claim history and provide a quote. IRDAI mandates seamless porting across all insurers."
+    },
+    {
+      "id": "faq-10",
+      "question": "What is cashless hospitalization?",
+      "keywords": ["cashless", "cashless treatment", "no payment hospital"],
+      "answer": "Cashless hospitalization means you don't pay the hospital - we settle directly with them. Available only at network hospitals. Inform hospital insurance desk 48 hours before planned admission (24 hours for emergency). Hospital sends pre-authorization request to us. Once approved, treatment proceeds without payment from you."
+    }
+  ]
+}

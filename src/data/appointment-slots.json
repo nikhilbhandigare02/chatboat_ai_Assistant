@@ -1,0 +1,53 @@
+{
+  "slots": [
+    {
+      "id": "slot-1",
+      "date": "2026-03-24",
+      "time": "10:00 AM",
+      "doctor": "Dr. Sharma",
+      "specialty": "General Physician",
+      "available": true
+    },
+    {
+      "id": "slot-2",
+      "date": "2026-03-24",
+      "time": "02:00 PM",
+      "doctor": "Dr. Patel",
+      "specialty": "Cardiologist",
+      "available": true
+    },
+    {
+      "id": "slot-3",
+      "date": "2026-03-25",
+      "time": "11:00 AM",
+      "doctor": "Dr. Kumar",
+      "specialty": "Orthopedic",
+      "available": true
+    },
+    {
+      "id": "slot-4",
+      "date": "2026-03-25",
+      "time": "03:00 PM",
+      "doctor": "Dr. Mehta",
+      "specialty": "Dermatologist",
+      "available": true
+    },
+    {
+      "id": "slot-5",
+      "date": "2026-03-26",
+      "time": "09:00 AM",
+      "doctor": "Dr. Singh",
+      "specialty": "Neurologist",
+      "available": true
+    },
+    {
+      "id": "slot-6",
+      "date": "2026-03-26",
+      "time": "04:00 PM",
+      "doctor": "Dr. Reddy",
+      "specialty": "Pediatrician",
+      "available": true
+    }
+  ],
+  "bookings": []
+}
