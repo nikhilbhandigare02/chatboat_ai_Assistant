@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
         appointmentDetails = `Appointment at ${appointment.center_name} tomorrow at ${appointment.appointment_time}`;
       }
       
-      questionText = `Hi ${userName}, I found your existing appointment: ${appointmentDetails}. What would you like to do? You can say reschedule, continue, or cancel.`;
+      questionText = `Hi ${userName}, I see you already have an appointment set up: ${appointmentDetails}. What would you like to do with it? You can reschedule, keep it as is, or cancel it.`;
     } else {
       // No existing appointments - normal booking flow
       const greeting = patientName
@@ -46,7 +46,7 @@ router.post('/', async (req, res) => {
       const greetingAudioUrl = await twilioTTSHelper.generateAudioURL(greeting);
       twiml.play(greetingAudioUrl);
       
-      questionText = 'How can I help you today? Would you like a home visit, or would you prefer to visit a diagnostic center?';
+      questionText = 'How can I help you today? Would you prefer having a doctor visit you at home, or would you rather go to a diagnostic center?';
     }
 
     const questionAudioUrl = await twilioTTSHelper.generateAudioURL(questionText);

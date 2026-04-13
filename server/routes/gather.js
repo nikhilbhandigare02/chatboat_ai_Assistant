@@ -2,6 +2,7 @@ import express from 'express';
 import twilio from 'twilio';
 import bookingFlowController from '../services/bookingFlowController.js';
 import twilioTTSHelper from '../services/twilioTTSHelper.js';
+import sessionManager from '../services/bookingSessionManager.js';
 
 const router = express.Router();
 const VoiceResponse = twilio.twiml.VoiceResponse;

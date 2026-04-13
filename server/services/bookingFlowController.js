@@ -150,6 +150,10 @@ class BookingFlowController {
         response = this.handleTimeSelection(session, extractedInput);
         break;
 
+      case STEPS.VOICE_CONFIRMATION:
+        response = await this.handleVoiceConfirmation(session, extractedInput);
+        break;
+
       case STEPS.EXISTING_APPOINTMENT_CHECK:
         response = this.handleExistingAppointmentResponse(session, extractedInput);
         break;
@@ -193,7 +197,7 @@ class BookingFlowController {
     if (input === 'out_of_scope') {
       return {
         success: true,
-        message: "I can help you schedule your mandatory medical check‑up. Would you like a doctor to visit your home, or would you prefer to go to a diagnostic center?",
+        message: "I can help you schedule your mandatory medical check­up. Would you like a doctor to visit your home, or would you prefer to go to a diagnostic center?",
         options: ['Home Visit', 'Diagnostic Center Visit'],
         type: 'selection',
         channelType: session.channelType,
@@ -205,7 +209,7 @@ class BookingFlowController {
     if (input === 'incomplete') {
       return {
         success: true,
-        message: "I'm sorry, I didn't catch the complete request. Could you please tell me your preference?\n\nWould you prefer a doctor to visit you at home, or would you like to visit one of our diagnostic centers?\n\n.",
+        message: "I'm sorry, I didn't quite catch what you were saying. Could you tell me again - would you prefer a doctor to visit you at home, or would you rather go to a diagnostic center?",
         options: ['Home Visit', 'Diagnostic Center Visit'],
         type: 'selection',
         channelType: session.channelType,
@@ -215,25 +219,71 @@ class BookingFlowController {
 
     if (input === '1' || input === 'one' || input === 'home' || input === 'home visit') {
       // Home Visit selected
-      sessionManager.updateSession(session.sessionId, {
-        selectedFlow: FLOW_TYPES.HOME,
-        currentStep: STEPS.TIME_SELECTION
-      });
+      if (session.channelType === 'call') {
+        // For voice calls, ask for confirmation first
+        sessionManager.updateSession(session.sessionId, {
+          pendingData: {
+            step: STEPS.ENTRY,
+            input: userInput,
+            action: 'select_home'
+          },
+          previousStep: STEPS.ENTRY,
+          currentStep: STEPS.VOICE_CONFIRMATION
+        });
 
-      return this.getHomeVisitTimeSelection(session);
+        return {
+          success: true,
+          message: "You chose home visit. Do you wish to confirm? Yes or No?",
+          options: ['Yes', 'No'],
+          type: 'selection',
+          channelType: session.channelType,
+          currentStep: STEPS.VOICE_CONFIRMATION
+        };
+      } else {
+        // For chat, proceed directly
+        sessionManager.updateSession(session.sessionId, {
+          selectedFlow: FLOW_TYPES.HOME,
+          currentStep: STEPS.TIME_SELECTION
+        });
+
+        return this.getHomeVisitTimeSelection(session);
+      }
     } else if (input === '2' || input === 'two' || input === 'center' || input === 'diagnostic' || input === 'diagnostic center') {
       // Diagnostic Center selected
-      sessionManager.updateSession(session.sessionId, {
-        selectedFlow: FLOW_TYPES.CENTER,
-        currentStep: STEPS.CENTER_SELECTION
-      });
+      if (session.channelType === 'call') {
+        // For voice calls, ask for confirmation first
+        sessionManager.updateSession(session.sessionId, {
+          pendingData: {
+            step: STEPS.ENTRY,
+            input: userInput,
+            action: 'select_center'
+          },
+          previousStep: STEPS.ENTRY,
+          currentStep: STEPS.VOICE_CONFIRMATION
+        });
 
-      return this.getCenterSelection(session);
+        return {
+          success: true,
+          message: "You chose diagnostic center visit. Do you wish to confirm? Yes or No?",
+          options: ['Yes', 'No'],
+          type: 'selection',
+          channelType: session.channelType,
+          currentStep: STEPS.VOICE_CONFIRMATION
+        };
+      } else {
+        // For chat, proceed directly
+        sessionManager.updateSession(session.sessionId, {
+          selectedFlow: FLOW_TYPES.CENTER,
+          currentStep: STEPS.CENTER_SELECTION
+        });
+
+        return this.getCenterSelection(session);
+      }
     } else {
       // Invalid input - ask again with acknowledgment
       return {
         success: true,
-        message: `Sorry, I didn't catch that. Would you like a home visit, or would you prefer a diagnostic center?`,
+        message: `Sorry, I didn't quite catch that. Are you thinking home visit or diagnostic center?`,
         options: ['Home Visit', 'Diagnostic Center Visit'],
         type: 'selection',
         channelType: session.channelType,
@@ -252,7 +302,7 @@ class BookingFlowController {
     if (input === 'out_of_scope') {
       return {
         success: true,
-        message: "I can help you book your medical check‑up. Nearby options include HealthCare (about 2 km), City Lab (around 5 km), and MedPlus (about 8 km). Which would you like to choose?",
+        message: "I can help you book your medical check‑up. There are some great nearby options - HealthCare is about 2 km away, City Lab is around 5 km, and MedPlus is about 8 km. Which one sounds good to you?",
         options: ['HealthCare', 'City Lab', 'MedPlus'],
         type: 'selection',
         channelType: session.channelType,
@@ -264,7 +314,7 @@ class BookingFlowController {
     if (input === 'incomplete') {
       return {
         success: true,
-        message: "I didn't catch the center name. You can choose HealthCare, City Lab, or MedPlus — which works for you?",
+        message: "I didn't quite catch the center name. We've got HealthCare, City Lab, or MedPlus available - which one works better for you?",
         options: ['HealthCare', 'City Lab', 'MedPlus'],
         type: 'selection',
         channelType: session.channelType,
@@ -276,7 +326,7 @@ class BookingFlowController {
       // Invalid center number - help user
       return {
         success: true,
-        message: `Sorry, I didn't catch that. Which center would you like — HealthCare, City Lab, or MedPlus?`,
+        message: `Sorry, I didn't quite catch that. Which center sounds good - HealthCare, City Lab, or MedPlus?`,
         options: ['HealthCare', 'City Lab', 'MedPlus'],
         type: 'selection',
         channelType: session.channelType,
@@ -286,22 +336,46 @@ class BookingFlowController {
 
     const selectedCenter = DIAGNOSTIC_CENTERS[input - 1];
 
-    if (selectedCenter.isFar) {
-      // Center is far - need confirmation
+    if (session.channelType === 'call') {
+      // For voice calls, ask for confirmation first
       sessionManager.updateSession(session.sessionId, {
-        selectedCenter: selectedCenter.id,
-        currentStep: STEPS.DISTANCE_CONFIRMATION
+        pendingData: {
+          step: STEPS.CENTER_SELECTION,
+          input: userInput,
+          action: selectedCenter.isFar ? 'select_far_center' : 'select_near_center',
+          centerId: selectedCenter.id
+        },
+        previousStep: STEPS.CENTER_SELECTION,
+        currentStep: STEPS.VOICE_CONFIRMATION
       });
 
-      return this.getDistanceConfirmation(session, selectedCenter);
+      return {
+        success: true,
+        message: `You chose ${selectedCenter.name}. Do you wish to confirm? Yes or No?`,
+        options: ['Yes', 'No'],
+        type: 'selection',
+        channelType: session.channelType,
+        currentStep: STEPS.VOICE_CONFIRMATION
+      };
     } else {
-      // Center is near - go to time selection
-      sessionManager.updateSession(session.sessionId, {
-        selectedCenter: selectedCenter.id,
-        currentStep: STEPS.TIME_SELECTION
-      });
+      // For chat, proceed directly
+      if (selectedCenter.isFar) {
+        // Center is far - need confirmation
+        sessionManager.updateSession(session.sessionId, {
+          selectedCenter: selectedCenter.id,
+          currentStep: STEPS.DISTANCE_CONFIRMATION
+        });
 
-      return this.getDiagnosticCenterTimeSelection(session, selectedCenter);
+        return this.getDistanceConfirmation(session, selectedCenter);
+      } else {
+        // Center is near - go to time selection
+        sessionManager.updateSession(session.sessionId, {
+          selectedCenter: selectedCenter.id,
+          currentStep: STEPS.TIME_SELECTION
+        });
+
+        return this.getDiagnosticCenterTimeSelection(session, selectedCenter);
+      }
     }
   }
 
@@ -329,7 +403,7 @@ class BookingFlowController {
       const center = getCenterById(session.selectedCenter);
       return {
         success: true,
-        message: "I didn't catch that. " + center.name + " is about " + center.distance + " from you. Is that okay? Please say yes or no.",
+        message: "I didn't quite catch that. " + center.name + " is about " + center.distance + " from you. Does that work for you? Just say yes or no.",
         options: ['Yes', 'No'],
         type: 'selection',
         channelType: session.channelType,
@@ -359,7 +433,7 @@ class BookingFlowController {
       const center = getCenterById(session.selectedCenter);
       return {
         success: true,
-        message: `Sorry, I didn't catch that. Do you want to continue with ${center.name} or choose a different center? Please say "yes" or "no".`,
+        message: `Sorry, I didn't quite catch that. Are you good with ${center.name}, or would you rather look at a different center? Just let me know yes or no.`,
         options: ['Yes', 'No'],
         type: 'selection',
         channelType: session.channelType,
@@ -380,7 +454,7 @@ class BookingFlowController {
     if (input === 'out_of_scope') {
       return {
         success: true,
-        message: "I can help you with your booking. What time in the morning works best for you? For example, you can say seven am, eight am, or nine am.",
+        message: "I can help you with your booking. What time in the morning works best for you? Something like seven am, eight am, or nine am would be great.",
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -445,21 +519,67 @@ class BookingFlowController {
           return this.getUnavailableSlotMessage(session, matchingSlot);
         }
         
-        // Time is available - proceed with booking
-        sessionManager.updateSession(session.sessionId, {
-          selectedTime: matchingSlot,
-          currentStep: STEPS.CONFIRMATION
-        });
-        return this.getConfirmationMessage(session);
+        // Time is available - for voice calls, ask for confirmation first
+        if (session.channelType === 'call') {
+          sessionManager.updateSession(session.sessionId, {
+            pendingData: {
+              step: STEPS.TIME_SELECTION,
+              input: userInput,
+              action: 'select_time',
+              selectedTime: matchingSlot
+            },
+            previousStep: STEPS.TIME_SELECTION,
+            currentStep: STEPS.VOICE_CONFIRMATION
+          });
+
+          return {
+            success: true,
+            message: `You chose ${matchingSlot}. Do you wish to confirm? Yes or No?`,
+            options: ['Yes', 'No'],
+            type: 'selection',
+            channelType: session.channelType,
+            currentStep: STEPS.VOICE_CONFIRMATION
+          };
+        } else {
+          // For chat, proceed directly to confirmation
+          sessionManager.updateSession(session.sessionId, {
+            selectedTime: matchingSlot,
+            currentStep: STEPS.CONFIRMATION
+          });
+          return this.getConfirmationMessage(session);
+        }
       } else {
         // Time format is valid but not in our predefined slots
         if (checkSlotAvailability(extractedTime, session.selectedFlow)) {
           // Time is within valid range but not a predefined slot
-          sessionManager.updateSession(session.sessionId, {
-            selectedTime: extractedTime,
-            currentStep: STEPS.CONFIRMATION
-          });
-          return this.getConfirmationMessage(session);
+          if (session.channelType === 'call') {
+            sessionManager.updateSession(session.sessionId, {
+              pendingData: {
+                step: STEPS.TIME_SELECTION,
+                input: userInput,
+                action: 'select_time',
+                selectedTime: extractedTime
+              },
+              previousStep: STEPS.TIME_SELECTION,
+              currentStep: STEPS.VOICE_CONFIRMATION
+            });
+
+            return {
+              success: true,
+              message: `You chose ${extractedTime}. Do you wish to confirm? Yes or No?`,
+              options: ['Yes', 'No'],
+              type: 'selection',
+              channelType: session.channelType,
+              currentStep: STEPS.VOICE_CONFIRMATION
+            };
+          } else {
+            // For chat, proceed directly to confirmation
+            sessionManager.updateSession(session.sessionId, {
+              selectedTime: extractedTime,
+              currentStep: STEPS.CONFIRMATION
+            });
+            return this.getConfirmationMessage(session);
+          }
         } else {
           // Time is outside valid range
           return {
@@ -484,17 +604,40 @@ class BookingFlowController {
       
       // Validate the extracted time is within allowed range
       if (checkSlotAvailability(extractedTime, session.selectedFlow)) {
-        // Time is valid - proceed with booking
-        sessionManager.updateSession(session.sessionId, {
-          selectedTime: extractedTime,
-          currentStep: STEPS.CONFIRMATION
-        });
-        return this.getConfirmationMessage(session);
+        // Time is valid - for voice calls, ask for confirmation first
+        if (session.channelType === 'call') {
+          sessionManager.updateSession(session.sessionId, {
+            pendingData: {
+              step: STEPS.TIME_SELECTION,
+              input: userInput,
+              action: 'select_time',
+              selectedTime: extractedTime
+            },
+            previousStep: STEPS.TIME_SELECTION,
+            currentStep: STEPS.VOICE_CONFIRMATION
+          });
+
+          return {
+            success: true,
+            message: `You chose ${extractedTime}. Do you wish to confirm? Yes or No?`,
+            options: ['Yes', 'No'],
+            type: 'selection',
+            channelType: session.channelType,
+            currentStep: STEPS.VOICE_CONFIRMATION
+          };
+        } else {
+          // For chat, proceed directly to confirmation
+          sessionManager.updateSession(session.sessionId, {
+            selectedTime: extractedTime,
+            currentStep: STEPS.CONFIRMATION
+          });
+          return this.getConfirmationMessage(session);
+        }
       } else {
         // Time is outside valid range
         return {
           success: true,
-          message: `I'm sorry, but "${extractedTime}" is not available. Please choose a time between 7:00 AM and 9:00 AM.`,
+          message: `I'm sorry, "${extractedTime}" won't work for us. How about sometime between 7:00 AM and 9:00 AM?`,
           options: ['7 AM', '8 AM', '9 AM'],
           type: 'selection',
           channelType: session.channelType,
@@ -531,13 +674,214 @@ class BookingFlowController {
       return this.getUnavailableSlotMessage(session, selectedTime);
     }
 
-    // Time is available - confirm booking
-    sessionManager.updateSession(session.sessionId, {
-      selectedTime: selectedTime,
-      currentStep: STEPS.CONFIRMATION
+    // Time is available - for voice calls, ask for confirmation first
+    if (session.channelType === 'call') {
+      sessionManager.updateSession(session.sessionId, {
+        pendingData: {
+          step: STEPS.TIME_SELECTION,
+          input: userInput,
+          action: 'select_time',
+          selectedTime: selectedTime
+        },
+        previousStep: STEPS.TIME_SELECTION,
+        currentStep: STEPS.VOICE_CONFIRMATION
+      });
+
+      return {
+        success: true,
+        message: `You chose ${selectedTime}. Do you wish to confirm? Yes or No?`,
+        options: ['Yes', 'No'],
+        type: 'selection',
+        channelType: session.channelType,
+        currentStep: STEPS.VOICE_CONFIRMATION
+      };
+    } else {
+      // For chat, proceed directly to confirmation
+      sessionManager.updateSession(session.sessionId, {
+        selectedTime: selectedTime,
+        currentStep: STEPS.CONFIRMATION
+      });
+
+      return await this.getConfirmationMessage(session);
+    }
+  }
+
+  /**
+   * Handle voice confirmation (Yes/No responses)
+   */
+  async handleVoiceConfirmation(session, userInput) {
+    const input = userInput.toString().trim().toLowerCase().replace(/[.,!?;:]+$/, '');
+    const previousStep = session.previousStep;
+    const pendingData = session.pendingData;
+
+    console.log(`[DEBUG] Voice confirmation - Input: "${input}", PreviousStep: "${previousStep}", PendingData:`, pendingData);
+    console.log(`[DEBUG] Session data:`, {
+      sessionId: session.sessionId,
+      currentStep: session.currentStep,
+      previousStep: session.previousStep,
+      pendingData: session.pendingData
     });
 
-    return await this.getConfirmationMessage(session);
+    if (input === 'yes' || input === '1' || input === 'one' || input === 'okay' || input === 'ok' || input === 'yeah' || input === 'sure') {
+      console.log(`[DEBUG] User said YES - proceeding with pending action`);
+      
+      // Check if pendingData exists
+      if (!pendingData) {
+        console.log(`[DEBUG] ERROR: pendingData is null or undefined!`);
+        return {
+          success: true,
+          message: "I'm sorry, I lost track of what we were confirming. Let me ask again.",
+          options: ['Home Visit', 'Diagnostic Center Visit'],
+          type: 'selection',
+          channelType: session.channelType,
+          currentStep: STEPS.ENTRY
+        };
+      }
+      
+      // User confirmed - proceed with the pending action
+      sessionManager.updateSession(session.sessionId, {
+        currentStep: previousStep,
+        pendingData: null,
+        previousStep: null
+      });
+      return await this.processPendingAction(session, pendingData);
+    } else if (input === 'no' || input === '2' || input === 'two' || input === 'nope' || input.includes('don\'t') || input.includes('not') || input.includes('cancel')) {
+      console.log(`[DEBUG] User said NO - retrying previous step`);
+      // User rejected - ask the question again
+      sessionManager.updateSession(session.sessionId, {
+        currentStep: previousStep,
+        pendingData: null,
+        previousStep: null
+      });
+      return this.getRetryMessage(session, previousStep);
+    } else {
+      console.log(`[DEBUG] Invalid input - asking again`);
+      // Invalid input - ask again
+      return {
+        success: true,
+        message: "I didn't catch that. Please say yes or no.",
+        options: ['Yes', 'No'],
+        type: 'selection',
+        channelType: session.channelType,
+        currentStep: STEPS.VOICE_CONFIRMATION
+      };
+    }
+  }
+
+  /**
+   * Process pending action after confirmation
+   */
+  async processPendingAction(session, pendingData) {
+    console.log(`[DEBUG] Processing pending action:`, pendingData);
+    
+    if (!pendingData) {
+      console.log(`[DEBUG] ERROR: pendingData is null in processPendingAction!`);
+      return {
+        success: false,
+        message: 'Error: No pending action to process',
+        error: 'Missing pending data'
+      };
+    }
+    
+    // Handle specific actions first
+    if (pendingData.action === 'select_home') {
+      sessionManager.updateSession(session.sessionId, {
+        selectedFlow: FLOW_TYPES.HOME,
+        currentStep: STEPS.TIME_SELECTION
+      });
+      return this.getHomeVisitTimeSelection(session);
+    } else if (pendingData.action === 'select_center') {
+      sessionManager.updateSession(session.sessionId, {
+        selectedFlow: FLOW_TYPES.CENTER,
+        currentStep: STEPS.CENTER_SELECTION
+      });
+      return this.getCenterSelection(session);
+    } else if (pendingData.action === 'select_near_center') {
+      const center = getCenterById(pendingData.centerId);
+      sessionManager.updateSession(session.sessionId, {
+        selectedCenter: pendingData.centerId,
+        currentStep: STEPS.TIME_SELECTION
+      });
+      return this.getDiagnosticCenterTimeSelection(session, center);
+    } else if (pendingData.action === 'select_far_center') {
+      const center = getCenterById(pendingData.centerId);
+      sessionManager.updateSession(session.sessionId, {
+        selectedCenter: pendingData.centerId,
+        currentStep: STEPS.DISTANCE_CONFIRMATION
+      });
+      return this.getDistanceConfirmation(session, center);
+    } else if (pendingData.action === 'select_time') {
+      sessionManager.updateSession(session.sessionId, {
+        selectedTime: pendingData.selectedTime,
+        currentStep: STEPS.CONFIRMATION
+      });
+      return this.getConfirmationMessage(session);
+    } else if (pendingData.action === 'reschedule_time') {
+      try {
+        const existingAppointment = session.existingAppointments[0];
+        await sqliteService.rescheduleAppointment(existingAppointment.id, pendingData.selectedTime);
+        
+        sessionManager.updateSession(session.sessionId, {
+          currentStep: STEPS.COMPLETED
+        });
+
+        return this.getRescheduleConfirmationMessage(session, existingAppointment, pendingData.selectedTime);
+      } catch (error) {
+        console.error('[BookingFlow] Error rescheduling appointment:', error);
+        return {
+          success: false,
+          message: 'Sorry, I encountered an error while rescheduling your appointment. Please try again.',
+          error: 'Database error'
+        };
+      }
+    }
+
+    // Handle regular step processing
+    switch (pendingData.step) {
+      case STEPS.ENTRY:
+        return this.handleFlowSelection(session, pendingData.input);
+      case STEPS.CENTER_SELECTION:
+        return this.handleCenterSelection(session, pendingData.input);
+      case STEPS.DISTANCE_CONFIRMATION:
+        return this.handleDistanceConfirmation(session, pendingData.input);
+      case STEPS.TIME_SELECTION:
+        return this.handleTimeSelection(session, pendingData.input);
+      case STEPS.EXISTING_APPOINTMENT_CHECK:
+        return this.handleExistingAppointmentResponse(session, pendingData.input);
+      case STEPS.RESCHEDULE_OPTIONS:
+        return this.handleRescheduleOptions(session, pendingData.input);
+      case STEPS.RESCHEDULE_TIME_SELECTION:
+        return this.handleRescheduleTimeSelection(session, pendingData.input);
+      default:
+        return {
+          success: false,
+          message: 'Invalid pending step',
+          error: 'Unknown pending step'
+        };
+    }
+  }
+
+  /**
+   * Get retry message for voice confirmation
+   */
+  getRetryMessage(session, step) {
+    switch (step) {
+      case STEPS.ENTRY:
+        return this.getEntryMessage(session);
+      case STEPS.CENTER_SELECTION:
+        return this.getCenterSelection(session);
+      case STEPS.DISTANCE_CONFIRMATION:
+        const center = getCenterById(session.selectedCenter);
+        return this.getDistanceConfirmation(session, center);
+      case STEPS.TIME_SELECTION:
+        return this.getTimeSelectionMessage(session);
+      case STEPS.EXISTING_APPOINTMENT_CHECK:
+        return this.getExistingAppointmentMessage(session);
+      case STEPS.RESCHEDULE_OPTIONS:
+        return this.getRescheduleOptionsMessage(session);
+      default:
+        return this.getEntryMessage(session);
+    }
   }
 
   /**
@@ -551,7 +895,7 @@ class BookingFlowController {
     if (input === 'out_of_scope') {
       return {
         success: true,
-        message: "I can help you with your existing appointment. You can choose to reschedule, continue with your current appointment, or cancel. What would you like to do?",
+        message: "I can help you with your existing appointment. You can reschedule it, keep it as is, or cancel it. What sounds best to you?",
         options: ['Reschedule', 'Continue', 'Cancel'],
         type: 'selection',
         channelType: session.channelType,
@@ -563,7 +907,7 @@ class BookingFlowController {
     if (input === 'incomplete') {
       return {
         success: true,
-        message: "I didn't catch that. Would you like to reschedule your appointment, continue with it as scheduled, or cancel it?",
+        message: "I didn't quite catch that. Did you want to reschedule, keep your appointment as is, or cancel it?",
         options: ['Reschedule', 'Continue', 'Cancel'],
         type: 'selection',
         channelType: session.channelType,
@@ -587,7 +931,7 @@ class BookingFlowController {
       // Invalid input
       return {
         success: true,
-        message: `Sorry, I didn't catch that. Would you like to reschedule, continue with your current appointment, or cancel it?`,
+        message: `Sorry, I didn't quite catch that. Were you thinking reschedule, keep it as is, or cancel?`,
         options: ['Reschedule', 'Continue', 'Cancel'],
         type: 'selection',
         channelType: session.channelType,
@@ -606,7 +950,7 @@ class BookingFlowController {
     if (input === 'out_of_scope') {
       return {
         success: true,
-        message: "I can help you reschedule. What time in the morning works best for you? For example, you can say seven am, eight am, or nine am.",
+        message: "I can help you reschedule. What time in the morning works better for you? Maybe seven am, eight am, or nine am?",
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -618,7 +962,7 @@ class BookingFlowController {
     if (input === 'incomplete') {
       return {
         success: true,
-        message: "I didn't catch the time. What time would you like to reschedule to? For example, seven am, eight am, or nine am.",
+        message: "I didn't quite catch the time. What time works better for you to reschedule? Something like seven am, eight am, or nine am?",
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -645,7 +989,7 @@ class BookingFlowController {
 
     return {
       success: true,
-      message: "What time would you like to reschedule your appointment to? You can say something like seven am, eight am, or nine am.",
+      message: "What time would work better to reschedule your appointment to? Maybe seven am, eight am, or nine am?",
       options: ['7 AM', '8 AM', '9 AM'],
       type: 'selection',
       channelType: session.channelType,
@@ -665,7 +1009,7 @@ class BookingFlowController {
     if (input === 'out_of_scope') {
       return {
         success: true,
-        message: "I can help you reschedule. What time in the morning works best for you? For example, you can say seven am, eight am, or nine am.",
+        message: "I can help you reschedule. What time in the morning works better for you? Maybe seven am, eight am, or nine am?",
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -677,7 +1021,7 @@ class BookingFlowController {
     if (input === 'incomplete') {
       return {
         success: true,
-        message: "I didn't catch the time. What time would you like to reschedule to? For example, seven am, eight am, or nine am.",
+        message: "I didn't quite catch the time. What time works better for you to reschedule? Something like seven am, eight am, or nine am?",
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -724,35 +1068,38 @@ class BookingFlowController {
           return this.getUnavailableSlotMessage(session, matchingSlot);
         }
         
-        // Update the appointment in database
-        try {
-          const existingAppointment = session.existingAppointments[0];
-          await sqliteService.rescheduleAppointment(existingAppointment.id, matchingSlot);
-          
+        // For voice calls, ask for confirmation first
+        if (session.channelType === 'call') {
           sessionManager.updateSession(session.sessionId, {
-            currentStep: STEPS.COMPLETED
+            pendingData: {
+              step: STEPS.RESCHEDULE_TIME_SELECTION,
+              input: userInput,
+              action: 'reschedule_time',
+              selectedTime: matchingSlot
+            },
+            previousStep: STEPS.RESCHEDULE_TIME_SELECTION,
+            currentStep: STEPS.VOICE_CONFIRMATION
           });
 
-          return this.getRescheduleConfirmationMessage(session, existingAppointment, matchingSlot);
-        } catch (error) {
-          console.error('[BookingFlow] Error rescheduling appointment:', error);
           return {
-            success: false,
-            message: 'Sorry, I encountered an error while rescheduling your appointment. Please try again.',
-            error: 'Database error'
+            success: true,
+            message: `You chose ${matchingSlot} for reschedule. Do you wish to confirm? Yes or No?`,
+            options: ['Yes', 'No'],
+            type: 'selection',
+            channelType: session.channelType,
+            currentStep: STEPS.VOICE_CONFIRMATION
           };
-        }
-      } else {
-        if (checkSlotAvailability(extractedTime, session.existingAppointments[0].appointment_type)) {
+        } else {
+          // For chat, proceed directly
           try {
             const existingAppointment = session.existingAppointments[0];
-            await sqliteService.rescheduleAppointment(existingAppointment.id, extractedTime);
+            await sqliteService.rescheduleAppointment(existingAppointment.id, matchingSlot);
             
             sessionManager.updateSession(session.sessionId, {
               currentStep: STEPS.COMPLETED
             });
 
-            return this.getRescheduleConfirmationMessage(session, existingAppointment, extractedTime);
+            return this.getRescheduleConfirmationMessage(session, existingAppointment, matchingSlot);
           } catch (error) {
             console.error('[BookingFlow] Error rescheduling appointment:', error);
             return {
@@ -760,6 +1107,50 @@ class BookingFlowController {
               message: 'Sorry, I encountered an error while rescheduling your appointment. Please try again.',
               error: 'Database error'
             };
+          }
+        }
+      } else {
+        if (checkSlotAvailability(extractedTime, session.existingAppointments[0].appointment_type)) {
+          // For voice calls, ask for confirmation first
+          if (session.channelType === 'call') {
+            sessionManager.updateSession(session.sessionId, {
+              pendingData: {
+                step: STEPS.RESCHEDULE_TIME_SELECTION,
+                input: userInput,
+                action: 'reschedule_time',
+                selectedTime: extractedTime
+              },
+              previousStep: STEPS.RESCHEDULE_TIME_SELECTION,
+              currentStep: STEPS.VOICE_CONFIRMATION
+            });
+
+            return {
+              success: true,
+              message: `You chose ${extractedTime} for reschedule. Do you wish to confirm? Yes or No?`,
+              options: ['Yes', 'No'],
+              type: 'selection',
+              channelType: session.channelType,
+              currentStep: STEPS.VOICE_CONFIRMATION
+            };
+          } else {
+            // For chat, proceed directly
+            try {
+              const existingAppointment = session.existingAppointments[0];
+              await sqliteService.rescheduleAppointment(existingAppointment.id, extractedTime);
+              
+              sessionManager.updateSession(session.sessionId, {
+                currentStep: STEPS.COMPLETED
+              });
+
+              return this.getRescheduleConfirmationMessage(session, existingAppointment, extractedTime);
+            } catch (error) {
+              console.error('[BookingFlow] Error rescheduling appointment:', error);
+              return {
+                success: false,
+                message: 'Sorry, I encountered an error while rescheduling your appointment. Please try again.',
+                error: 'Database error'
+              };
+            }
           }
         } else {
           return {
@@ -794,23 +1185,46 @@ class BookingFlowController {
       return this.getUnavailableSlotMessage(session, selectedTime);
     }
 
-    // Update the appointment in database
-    try {
-      const existingAppointment = session.existingAppointments[0];
-      await sqliteService.rescheduleAppointment(existingAppointment.id, selectedTime);
-      
+    // For voice calls, ask for confirmation first
+    if (session.channelType === 'call') {
       sessionManager.updateSession(session.sessionId, {
-        currentStep: STEPS.COMPLETED
+        pendingData: {
+          step: STEPS.RESCHEDULE_TIME_SELECTION,
+          input: userInput,
+          action: 'reschedule_time',
+          selectedTime: selectedTime
+        },
+        previousStep: STEPS.RESCHEDULE_TIME_SELECTION,
+        currentStep: STEPS.VOICE_CONFIRMATION
       });
 
-      return this.getRescheduleConfirmationMessage(session, existingAppointment, selectedTime);
-    } catch (error) {
-      console.error('[BookingFlow] Error rescheduling appointment:', error);
       return {
-        success: false,
-        message: 'Sorry, I encountered an error while rescheduling your appointment. Please try again.',
-        error: 'Database error'
+        success: true,
+        message: `You chose ${selectedTime} for reschedule. Do you wish to confirm? Yes or No?`,
+        options: ['Yes', 'No'],
+        type: 'selection',
+        channelType: session.channelType,
+        currentStep: STEPS.VOICE_CONFIRMATION
       };
+    } else {
+      // For chat, proceed directly
+      try {
+        const existingAppointment = session.existingAppointments[0];
+        await sqliteService.rescheduleAppointment(existingAppointment.id, selectedTime);
+        
+        sessionManager.updateSession(session.sessionId, {
+          currentStep: STEPS.COMPLETED
+        });
+
+        return this.getRescheduleConfirmationMessage(session, existingAppointment, selectedTime);
+      } catch (error) {
+        console.error('[BookingFlow] Error rescheduling appointment:', error);
+        return {
+          success: false,
+          message: 'Sorry, I encountered an error while rescheduling your appointment. Please try again.',
+          error: 'Database error'
+        };
+      }
     }
   }
 
@@ -823,7 +1237,7 @@ class BookingFlowController {
     const channelType = session.channelType;
     const userName = session.userName || 'valued customer';
 
-    let message = `Hi ${userName}, welcome to MedInsure. We need to schedule your mandatory medical check‑up. Would you like a doctor to visit your home, or would you prefer to go to a diagnostic center?`;
+    const message = `Hi ${userName}, welcome to MedInsure! We need to get your mandatory medical check­up scheduled. Would you prefer having a doctor visit you at home, or would you rather go to a diagnostic center?`;
 
     const options = ['Home Visit', 'Diagnostic Center Visit'];
 
@@ -841,7 +1255,7 @@ class BookingFlowController {
    * Home visit time selection
    */
   getHomeVisitTimeSelection(session) {
-    const message = `Great — a home visit it is. What time in the morning works best for you? You can say something like seven am, eight am, or nine am.`;
+    const message = `Great - a home visit it is! What time in the morning works best for you? Something like seven am, eight am, or nine am would be perfect.`;
 
     return {
       success: true,
@@ -860,7 +1274,7 @@ class BookingFlowController {
     let message = `Here are a few nearby options: `;
     message += `${DIAGNOSTIC_CENTERS[0].name} (${DIAGNOSTIC_CENTERS[0].distance}), `;
     message += `${DIAGNOSTIC_CENTERS[1].name} (${DIAGNOSTIC_CENTERS[1].distance}), `;
-    message += `and ${DIAGNOSTIC_CENTERS[2].name} (${DIAGNOSTIC_CENTERS[2].distance}). Which would you like to go with?`;
+    message += `and ${DIAGNOSTIC_CENTERS[2].name} (${DIAGNOSTIC_CENTERS[2].distance}). Which one feels right for you?`;
 
     const options = ['HealthCare', 'City Lab', 'MedPlus'];
 
@@ -878,7 +1292,7 @@ class BookingFlowController {
    * Distance confirmation for far centers
    */
   getDistanceConfirmation(session, center) {
-    const message = `You’ve selected ${center.name}. It’s about ${center.distance} from you. Does that work, or would you prefer something closer? You can say yes or no.`;
+    const message = `You've picked ${center.name}. It's about ${center.distance} from you. Does that work for you, or would you rather find something closer? Just say yes or no.`;
 
     return {
       success: true,
@@ -895,7 +1309,7 @@ class BookingFlowController {
    */
   getDiagnosticCenterTimeSelection(session, center) {
     const centerName = center.name;
-    const message = `Great — we’ll book it at ${centerName}. What time in the morning would you like? For example, seven am, eight am, or nine am.`;
+    const message = `Perfect - we'll get you set up at ${centerName}. What time in the morning works best for you? Maybe seven am, eight am, or nine am?`;
 
     return {
       success: true,
@@ -1098,7 +1512,7 @@ class BookingFlowController {
       message += `Appointment at ${appointment.center_name} tomorrow at ${appointment.appointment_time}.`;
     }
     
-    message += `\n\nWhat would you like to do?`;
+    message += `\n\nWhat would you prefer to do?`;
 
     return {
       success: true,

@@ -48,6 +48,7 @@ export const STEPS = {
   CENTER_SELECTION: 'center_selection',
   DISTANCE_CONFIRMATION: 'distance_confirmation',
   TIME_SELECTION: 'time_selection',
+  VOICE_CONFIRMATION: 'voice_confirmation',
   CONFIRMATION: 'confirmation',
   COMPLETED: 'completed',
   EXISTING_APPOINTMENT_CHECK: 'existing_appointment_check',
