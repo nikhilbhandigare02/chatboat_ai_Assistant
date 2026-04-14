@@ -1,0 +1,69 @@
+{
+  "sessionId": "session_1_1776142665029",
+  "userId": "1",
+  "userName": "Amit",
+  "channelType": "call",
+  "completedAt": "2026-04-14T04:58:54.088Z",
+  "bookingDetails": {
+    "flow": "home",
+    "center": null,
+    "time": "7:00 AM"
+  },
+  "transcript": [
+    {
+      "role": "assistant",
+      "content": "Hi Amit, welcome to MedInsure! We need to get your mandatory medical check­up scheduled. Would you prefer having a doctor visit you at home, or would you rather go to a diagnostic center?",
+      "timestamp": "2026-04-14T04:57:45.032Z"
+    },
+    {
+      "role": "user",
+      "content": "platform visit",
+      "timestamp": "2026-04-14T04:57:45.034Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Sorry, I didn't understand. Can you repeat?. Could you tell me again - would you prefer a doctor to visit you at home, or would you rather go to a diagnostic center?",
+      "timestamp": "2026-04-14T04:57:45.280Z"
+    },
+    {
+      "role": "user",
+      "content": "Select home visit.",
+      "timestamp": "2026-04-14T04:58:01.616Z"
+    },
+    {
+      "role": "assistant",
+      "content": "You chose home visit. Do you wish to confirm? Yes or No?",
+      "timestamp": "2026-04-14T04:58:01.922Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-14T04:58:10.942Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Great - a home visit it is! What time in the morning works best for you? Seven am, eight am, or nine am are available.",
+      "timestamp": "2026-04-14T04:58:11.092Z"
+    },
+    {
+      "role": "user",
+      "content": "7:00 a.m.",
+      "timestamp": "2026-04-14T04:58:25.109Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes, yes.",
+      "timestamp": "2026-04-14T04:58:38.789Z"
+    },
+    {
+      "role": "assistant",
+      "content": "I didn't catch that. Please say yes or no.",
+      "timestamp": "2026-04-14T04:58:38.922Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-14T04:58:53.959Z"
+    }
+  ]
+}

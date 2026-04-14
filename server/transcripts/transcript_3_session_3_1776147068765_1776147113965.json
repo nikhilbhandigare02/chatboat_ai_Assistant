@@ -1,0 +1,44 @@
+{
+  "sessionId": "session_3_1776147068765",
+  "userId": 3,
+  "userName": "Rahul",
+  "channelType": "chat",
+  "completedAt": "2026-04-14T06:11:53.965Z",
+  "bookingDetails": {
+    "flow": "home",
+    "center": null,
+    "time": "7:00 AM"
+  },
+  "transcript": [
+    {
+      "role": "assistant",
+      "content": "Hi Rahul, welcome to MedInsure! Please select your preferred language:",
+      "timestamp": "2026-04-14T06:11:08.765Z"
+    },
+    {
+      "role": "user",
+      "content": "2",
+      "timestamp": "2026-04-14T06:11:29.370Z"
+    },
+    {
+      "role": "assistant",
+      "content": "hai Rahul, medinsure_madhe_apsvita_ahiye! aplya_sakshya_medical_check-up_schedule_karava_lagel. aplya_dokryane_home_visit_karaya_yaje_ki_diagnostic_center_jaya_yaje?",
+      "timestamp": "2026-04-14T06:11:29.373Z"
+    },
+    {
+      "role": "user",
+      "content": "1",
+      "timestamp": "2026-04-14T06:11:43.902Z"
+    },
+    {
+      "role": "assistant",
+      "content": "khup_chhan! home_visit_karaya_yaje. sakali_kiti_vel_jamlem? 7 am, 8 am, ki 9 am upalabdha_ahe.",
+      "timestamp": "2026-04-14T06:11:43.903Z"
+    },
+    {
+      "role": "user",
+      "content": "7 AM",
+      "timestamp": "2026-04-14T06:11:53.953Z"
+    }
+  ]
+}

@@ -209,7 +209,7 @@ class BookingFlowController {
     if (input === 'incomplete') {
       return {
         success: true,
-        message: "I'm sorry, I didn't quite catch what you were saying. Could you tell me again - would you prefer a doctor to visit you at home, or would you rather go to a diagnostic center?",
+        message: "Sorry, I didn't understand. Can you repeat?. Could you tell me again - would you prefer a doctor to visit you at home, or would you rather go to a diagnostic center?",
         options: ['Home Visit', 'Diagnostic Center Visit'],
         type: 'selection',
         channelType: session.channelType,
@@ -283,7 +283,7 @@ class BookingFlowController {
       // Invalid input - ask again with acknowledgment
       return {
         success: true,
-        message: `Sorry, I didn't quite catch that. Are you thinking home visit or diagnostic center?`,
+        message: `Sorry, I didn't understand. Can you repeat?. Are you thinking home visit or diagnostic center?`,
         options: ['Home Visit', 'Diagnostic Center Visit'],
         type: 'selection',
         channelType: session.channelType,
@@ -314,7 +314,7 @@ class BookingFlowController {
     if (input === 'incomplete') {
       return {
         success: true,
-        message: "I didn't quite catch the center name. We've got HealthCare, City Lab, or MedPlus available - which one works better for you?",
+        message: "Sorry, I didn't understand. Can you repeat?. We've got HealthCare, City Lab, or MedPlus available - which one works better for you?",
         options: ['HealthCare', 'City Lab', 'MedPlus'],
         type: 'selection',
         channelType: session.channelType,
@@ -326,7 +326,7 @@ class BookingFlowController {
       // Invalid center number - help user
       return {
         success: true,
-        message: `Sorry, I didn't quite catch that. Which center sounds good - HealthCare, City Lab, or MedPlus?`,
+        message: `Sorry, I didn't understand. Can you repeat?. Which center sounds good - HealthCare, City Lab, or MedPlus?`,
         options: ['HealthCare', 'City Lab', 'MedPlus'],
         type: 'selection',
         channelType: session.channelType,
@@ -403,7 +403,7 @@ class BookingFlowController {
       const center = getCenterById(session.selectedCenter);
       return {
         success: true,
-        message: "I didn't quite catch that. " + center.name + " is about " + center.distance + " from you. Does that work for you? Just say yes or no.",
+        message: "Sorry, I didn't understand. Can you repeat?. " + center.name + " is about " + center.distance + " from you. Does that work for you? Just say yes or no.",
         options: ['Yes', 'No'],
         type: 'selection',
         channelType: session.channelType,
@@ -433,7 +433,7 @@ class BookingFlowController {
       const center = getCenterById(session.selectedCenter);
       return {
         success: true,
-        message: `Sorry, I didn't quite catch that. Are you good with ${center.name}, or would you rather look at a different center? Just let me know yes or no.`,
+        message: `Sorry, I didn't understand. Can you repeat?. Are you good with ${center.name}, or would you rather look at a different center? Just let me know yes or no.`,
         options: ['Yes', 'No'],
         type: 'selection',
         channelType: session.channelType,
@@ -454,7 +454,7 @@ class BookingFlowController {
     if (input === 'out_of_scope') {
       return {
         success: true,
-        message: "I can help you with your booking. What time in the morning works best for you? Something like seven am, eight am, or nine am would be great.",
+        message: "I can help you with your booking. What time in the morning works best for you? Seven am, eight am, or nine am are available.",
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -707,6 +707,103 @@ class BookingFlowController {
   }
 
   /**
+   * NLP-based positive confirmation detection
+   */
+  detectPositiveConfirmation(input) {
+    // Exact matches
+    const exactMatches = ['yes', 'yeah', 'yep', 'yup', 'sure', 'okay', 'ok', 'alright', 'definitely', 'absolutely', 'certainly', 'of course', 'please do', 'go ahead', 'confirm', 'confirmed'];
+    
+    // Typos and variations
+    const typoMatches = ['yesh', 'yesa', 'yess', 'yesss', 'yea', 'yas', 'yeshh', 'yessh', 'suree', 'suree', 'okk', 'okka', 'okey'];
+    
+    // Repetitive patterns (like "yes yes", "sure sure")
+    const repetitivePatterns = /^(yes|yeah|sure|ok|yep|yup)(\s+(yes|yeah|sure|ok|yep|yup))+$/;
+    
+    // Mixed confirmation patterns (like "yes confirm", "confirm yes", "sure yes")
+    const mixedPatterns = /^(yes|yeah|sure|ok|okay|yep|yup|alright|definitely|absolutely|certainly|confirm|confirmed|go|proceed|continue|accept|approve)\s+(yes|yeah|sure|ok|okay|yep|yup|alright|definitely|absolutely|certainly|confirm|confirmed|go|proceed|continue|accept|approve)$/;
+    
+    // Partial matches within longer phrases
+    const partialMatches = [
+      'yes please', 'yes that works', 'yes that sounds good', 'yes i agree', 
+      'yes that\'s fine', 'yes that\'s correct', 'yes let\'s do it', 'yes confirm',
+      'yes confirmed', 'yes definitely', 'yes absolutely', 'yes of course',
+      'yes go ahead', 'yes proceed', 'yes continue', 'yes accept', 'yes approve',
+      'sounds good', 'that works', 'that\'s fine', 'that\'s correct', 'perfect',
+      'sounds great', 'sounds perfect', 'i agree', 'i confirm', 'let\'s do it',
+      'go for it', 'do it', 'proceed', 'continue', 'accept', 'approved',
+      'confirm yes', 'confirmed yes', 'definitely yes', 'absolutely yes',
+      'sure yes', 'okay yes', 'alright yes', 'certainly yes'
+    ];
+    
+    // Check exact matches
+    if (exactMatches.includes(input)) return true;
+    
+    // Check typo matches
+    if (typoMatches.includes(input)) return true;
+    
+    // Check repetitive patterns
+    if (repetitivePatterns.test(input)) return true;
+    
+    // Check mixed confirmation patterns
+    if (mixedPatterns.test(input)) return true;
+    
+    // Check partial matches
+    for (const phrase of partialMatches) {
+      if (input.includes(phrase)) return true;
+    }
+    
+    // Check for positive words in the input
+    const positiveWords = ['yes', 'yeah', 'sure', 'ok', 'okay', 'yep', 'yup', 'definitely', 'absolutely', 'confirm', 'agree', 'accept', 'approve'];
+    const words = input.split(/\s+/);
+    const hasPositiveWord = words.some(word => positiveWords.some(posWord => word.includes(posWord) || posWord.includes(word)));
+    
+    return hasPositiveWord && !this.detectNegativeConfirmation(input);
+  }
+
+  /**
+   * NLP-based negative confirmation detection
+   */
+  detectNegativeConfirmation(input) {
+    // Exact matches
+    const exactMatches = ['no', 'nah', 'nope', 'not', 'never', 'cancel', 'stop', 'don\'t', 'do not', 'negative', 'reject', 'decline', 'disagree'];
+    
+    // Typos and variations
+    const typoMatches = ['noo', 'nooo', 'nopp', 'nopp', 'naah', 'naa', 'nott', 'cancell', 'stopp'];
+    
+    // Repetitive patterns (like "no no", "nope nope")
+    const repetitivePatterns = /^(no|nah|nope|not|cancel)(\s+(no|nah|nope|not|cancel))+$/;
+    
+    // Partial matches within longer phrases
+    const partialMatches = [
+      'no thank you', 'no thanks', 'not really', 'not interested', 'don\'t want',
+      'don\'t like', 'don\'t agree', 'don\'t confirm', 'not okay', 'not fine',
+      'that\'s not good', 'that\'s not right', 'that\'s wrong', 'i disagree',
+      'i refuse', 'i decline', 'i reject', 'cancel it', 'stop it', 'never mind'
+    ];
+    
+    // Check exact matches
+    if (exactMatches.includes(input)) return true;
+    
+    // Check typo matches
+    if (typoMatches.includes(input)) return true;
+    
+    // Check repetitive patterns
+    if (repetitivePatterns.test(input)) return true;
+    
+    // Check partial matches
+    for (const phrase of partialMatches) {
+      if (input.includes(phrase)) return true;
+    }
+    
+    // Check for negative words in the input
+    const negativeWords = ['no', 'nah', 'nope', 'not', 'never', 'cancel', 'stop', 'don\'t', 'negative', 'reject', 'decline', 'disagree'];
+    const words = input.split(/\s+/);
+    const hasNegativeWord = words.some(word => negativeWords.some(negWord => word.includes(negWord) || negWord.includes(word)));
+    
+    return hasNegativeWord;
+  }
+
+  /**
    * Handle voice confirmation (Yes/No responses)
    */
   async handleVoiceConfirmation(session, userInput) {
@@ -722,7 +819,13 @@ class BookingFlowController {
       pendingData: session.pendingData
     });
 
-    if (input === 'yes' || input === '1' || input === 'one' || input === 'okay' || input === 'ok' || input === 'yeah' || input === 'sure') {
+    // Enhanced NLP-based confirmation detection
+    const isPositiveResponse = this.detectPositiveConfirmation(input);
+    const isNegativeResponse = this.detectNegativeConfirmation(input);
+
+    console.log(`[DEBUG] NLP Detection - Positive: ${isPositiveResponse}, Negative: ${isNegativeResponse}`);
+
+    if (isPositiveResponse) {
       console.log(`[DEBUG] User said YES - proceeding with pending action`);
       
       // Check if pendingData exists
@@ -745,7 +848,7 @@ class BookingFlowController {
         previousStep: null
       });
       return await this.processPendingAction(session, pendingData);
-    } else if (input === 'no' || input === '2' || input === 'two' || input === 'nope' || input.includes('don\'t') || input.includes('not') || input.includes('cancel')) {
+    } else if (isNegativeResponse) {
       console.log(`[DEBUG] User said NO - retrying previous step`);
       // User rejected - ask the question again
       sessionManager.updateSession(session.sessionId, {
@@ -834,6 +937,8 @@ class BookingFlowController {
           error: 'Database error'
         };
       }
+    } else if (pendingData.action === 'cancel_appointment') {
+      return this.getCancelAppointmentMessage(session);
     }
 
     // Handle regular step processing
@@ -907,7 +1012,7 @@ class BookingFlowController {
     if (input === 'incomplete') {
       return {
         success: true,
-        message: "I didn't quite catch that. Did you want to reschedule, keep your appointment as is, or cancel it?",
+        message: "Sorry, I didn't understand. Can you repeat?. Did you want to reschedule, keep your appointment as is, or cancel it?",
         options: ['Reschedule', 'Continue', 'Cancel'],
         type: 'selection',
         channelType: session.channelType,
@@ -926,12 +1031,35 @@ class BookingFlowController {
       return this.getContinueExistingAppointmentMessage(session);
     } else if (input === '3' || input === 'three' || input === 'cancel' || input === 'cancellation') {
       // User wants to cancel
-      return this.getCancelAppointmentMessage(session);
+      if (session.channelType === 'call') {
+        // For voice calls, ask for confirmation first
+        sessionManager.updateSession(session.sessionId, {
+          pendingData: {
+            step: STEPS.EXISTING_APPOINTMENT_CHECK,
+            input: userInput,
+            action: 'cancel_appointment'
+          },
+          previousStep: STEPS.EXISTING_APPOINTMENT_CHECK,
+          currentStep: STEPS.VOICE_CONFIRMATION
+        });
+
+        return {
+          success: true,
+          message: "You chose to cancel your appointment. Do you wish to confirm? Yes or No?",
+          options: ['Yes', 'No'],
+          type: 'selection',
+          channelType: session.channelType,
+          currentStep: STEPS.VOICE_CONFIRMATION
+        };
+      } else {
+        // For chat, proceed directly
+        return this.getCancelAppointmentMessage(session);
+      }
     } else {
       // Invalid input
       return {
         success: true,
-        message: `Sorry, I didn't quite catch that. Were you thinking reschedule, keep it as is, or cancel?`,
+        message: `Sorry, I didn't understand. Can you repeat?. Were you thinking reschedule, keep it as is, or cancel?`,
         options: ['Reschedule', 'Continue', 'Cancel'],
         type: 'selection',
         channelType: session.channelType,
@@ -950,7 +1078,7 @@ class BookingFlowController {
     if (input === 'out_of_scope') {
       return {
         success: true,
-        message: "I can help you reschedule. What time in the morning works better for you? Maybe seven am, eight am, or nine am?",
+        message: "I can help you reschedule. What time in the morning works better for you? Seven am, eight am, or nine am are available.",
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -962,7 +1090,7 @@ class BookingFlowController {
     if (input === 'incomplete') {
       return {
         success: true,
-        message: "I didn't quite catch the time. What time works better for you to reschedule? Something like seven am, eight am, or nine am?",
+        message: "Sorry, I didn't understand. Can you repeat?. What time works better for you to reschedule? Seven am, eight am, or nine am are available.",
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -989,7 +1117,7 @@ class BookingFlowController {
 
     return {
       success: true,
-      message: "What time would work better to reschedule your appointment to? Maybe seven am, eight am, or nine am?",
+      message: "What time would work better to reschedule your appointment to? Seven am, eight am, or nine am are available.",
       options: ['7 AM', '8 AM', '9 AM'],
       type: 'selection',
       channelType: session.channelType,
@@ -1009,7 +1137,7 @@ class BookingFlowController {
     if (input === 'out_of_scope') {
       return {
         success: true,
-        message: "I can help you reschedule. What time in the morning works better for you? Maybe seven am, eight am, or nine am?",
+        message: "I can help you reschedule. What time in the morning works better for you? Seven am, eight am, or nine am are available.",
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -1021,7 +1149,7 @@ class BookingFlowController {
     if (input === 'incomplete') {
       return {
         success: true,
-        message: "I didn't quite catch the time. What time works better for you to reschedule? Something like seven am, eight am, or nine am?",
+        message: "Sorry, I didn't understand. Can you repeat?. What time works better for you to reschedule? Seven am, eight am, or nine am are available.",
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -1171,7 +1299,7 @@ class BookingFlowController {
     if (isNaN(parsedInput) || parsedInput < 1 || parsedInput > 3) {
       return {
         success: true,
-        message: `I didn't quite catch that. Please tell me a morning time that works for you - seven am, eight am, or nine am are available.`,
+        message: `Sorry, I didn't understand. Can you repeat?. Please tell me a morning time that works for you - seven am, eight am, or nine am are available.`,
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -1255,7 +1383,7 @@ class BookingFlowController {
    * Home visit time selection
    */
   getHomeVisitTimeSelection(session) {
-    const message = `Great - a home visit it is! What time in the morning works best for you? Something like seven am, eight am, or nine am would be perfect.`;
+    const message = `Great - a home visit it is! What time in the morning works best for you? Seven am, eight am, or nine am are available.`;
 
     return {
       success: true,
@@ -1309,7 +1437,7 @@ class BookingFlowController {
    */
   getDiagnosticCenterTimeSelection(session, center) {
     const centerName = center.name;
-    const message = `Perfect - we'll get you set up at ${centerName}. What time in the morning works best for you? Maybe seven am, eight am, or nine am?`;
+    const message = `Perfect - we'll get you set up at ${centerName}. What time in the morning works best for you? Seven am, eight am, or nine am are available.`;
 
     return {
       success: true,
