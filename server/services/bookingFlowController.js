@@ -7,6 +7,7 @@
 import sessionManager from './bookingSessionManager.js';
 import { extractIntent } from './dynamicIntentExtractor.js';
 import sqliteService from './sqliteService.js';
+import smsService from './smsService.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -1564,6 +1565,32 @@ class BookingFlowController {
         sessionId: session.sessionId
       });
       console.log(`[BookingFlow] Appointment saved to database for user ${session.userId}`);
+
+      // Send SMS confirmation to user
+      try {
+        const user = getUserById(session.userId);
+        if (user && user.phone) {
+          const smsResult = await smsService.sendAppointmentConfirmation({
+            userName: session.userName,
+            userPhone: user.phone,
+            appointmentType: session.selectedFlow,
+            appointmentTime: session.selectedTime,
+            centerName: centerName,
+            centerAddress: centerAddress
+          });
+          
+          if (smsResult.success) {
+            console.log(`[BookingFlow] SMS confirmation sent to ${user.phone}`);
+          } else {
+            console.log(`[BookingFlow] SMS sending failed: ${smsResult.message}`);
+          }
+        } else {
+          console.log(`[BookingFlow] No phone number found for user ${session.userId}`);
+        }
+      } catch (smsError) {
+        console.error('[BookingFlow] Error sending SMS confirmation:', smsError);
+        // Don't fail the booking process if SMS fails
+      }
     } catch (error) {
       console.error('[BookingFlow] Error saving appointment to database:', error);
     }

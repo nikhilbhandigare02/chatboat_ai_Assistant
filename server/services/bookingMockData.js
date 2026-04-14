@@ -4,11 +4,11 @@
  */
 
 export const DEMO_USERS = [
-  { id: 1, name: 'Amit' },
-  { id: 2, name: 'Neha' },
-  { id: 3, name: 'Rahul' },
-  { id: 4, name: 'Sneha' },
-  { id: 5, name: 'Vikram' }
+  { id: 1, name: 'Amit', phone: '+919876543210' },
+  { id: 2, name: 'Neha', phone: '+919876543211' },
+  { id: 3, name: 'Rahul', phone: '+919876543212' },
+  { id: 4, name: 'Sneha', phone: '+919876543213' },
+  { id: 5, name: 'Vikram', phone: '+919876543214' }
 ];
 
 export const DIAGNOSTIC_CENTERS = [

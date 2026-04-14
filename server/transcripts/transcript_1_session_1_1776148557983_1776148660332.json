@@ -1,0 +1,89 @@
+{
+  "sessionId": "session_1_1776148557983",
+  "userId": "1",
+  "userName": "Amit",
+  "channelType": "call",
+  "completedAt": "2026-04-14T06:37:40.332Z",
+  "bookingDetails": {
+    "flow": "home",
+    "center": null,
+    "time": "8:00 AM"
+  },
+  "transcript": [
+    {
+      "role": "assistant",
+      "content": "Hi Amit, welcome to MedInsure! We need to get your mandatory medical check­up scheduled. Would you prefer having a doctor visit you at home, or would you rather go to a diagnostic center?",
+      "timestamp": "2026-04-14T06:35:57.986Z"
+    },
+    {
+      "role": "user",
+      "content": "telephone",
+      "timestamp": "2026-04-14T06:35:57.987Z"
+    },
+    {
+      "role": "assistant",
+      "content": "I can help you schedule your mandatory medical check­up. Would you like a doctor to visit your home, or would you prefer to go to a diagnostic center?",
+      "timestamp": "2026-04-14T06:35:58.252Z"
+    },
+    {
+      "role": "user",
+      "content": "Holi",
+      "timestamp": "2026-04-14T06:36:16.045Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Sorry, I didn't understand. Can you repeat?. Could you tell me again - would you prefer a doctor to visit you at home, or would you rather go to a diagnostic center?",
+      "timestamp": "2026-04-14T06:36:16.580Z"
+    },
+    {
+      "role": "user",
+      "content": "home visit",
+      "timestamp": "2026-04-14T06:36:32.741Z"
+    },
+    {
+      "role": "assistant",
+      "content": "You chose home visit. Do you wish to confirm? Yes or No?",
+      "timestamp": "2026-04-14T06:36:32.922Z"
+    },
+    {
+      "role": "user",
+      "content": "Yash",
+      "timestamp": "2026-04-14T06:36:46.792Z"
+    },
+    {
+      "role": "assistant",
+      "content": "I didn't catch that. Please say yes or no.",
+      "timestamp": "2026-04-14T06:36:47.020Z"
+    },
+    {
+      "role": "user",
+      "content": "Yash",
+      "timestamp": "2026-04-14T06:36:55.534Z"
+    },
+    {
+      "role": "assistant",
+      "content": "I didn't catch that. Please say yes or no.",
+      "timestamp": "2026-04-14T06:36:55.673Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-14T06:37:08.580Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Great - a home visit it is! What time in the morning works best for you? Seven am, eight am, or nine am are available.",
+      "timestamp": "2026-04-14T06:37:08.812Z"
+    },
+    {
+      "role": "user",
+      "content": "8:00 a.m.",
+      "timestamp": "2026-04-14T06:37:22.461Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-14T06:37:40.158Z"
+    }
+  ]
+}
