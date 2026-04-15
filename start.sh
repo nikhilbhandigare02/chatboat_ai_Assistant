@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "========================================"
-echo "  MedInsure AI - Quick Start"
+echo "  Health India AI - Quick Start"
 echo "========================================"
 echo ""
 
@@ -45,7 +45,7 @@ fi
 
 echo ""
 echo "========================================"
-echo "Starting MedInsure AI..."
+echo "Starting Health India AI..."
 echo "========================================"
 echo ""
 echo -e "${GREEN}Backend:${NC} http://localhost:3001"

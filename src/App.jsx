@@ -24,7 +24,7 @@ function App() {
     setSelectedPatient(patient);
     setMessages([]);
     if (patient) {
-      addMessage('assistant', `Hello ${patient.name}! I'm your MedInsure AI assistant. How can I help you today?`);
+      addMessage('assistant', `Hello ${patient.name}! I'm your Health India AI assistant. How can I help you today?`);
     }
   };
 
@@ -77,7 +77,7 @@ function App() {
       }
     } catch (error) {
       console.error('Error getting AI response:', error);
-      addMessage('assistant', "I'm sorry, I can only help you with booking your medical appointment. I'm here to assist you with scheduling your mandatory medical check-up through MedInsure.");
+      addMessage('assistant', "I'm sorry, I can only help you with booking your medical appointment. I'm here to assist you with scheduling your mandatory medical check-up through Health India.");
     } finally {
       setIsTyping(false);
     }
@@ -118,7 +118,7 @@ function App() {
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold">MedInsure AI</h1>
+              <h1 className="text-3xl font-bold">Health India AI</h1>
               <p className="text-blue-100 mt-1">Your Health Insurance Assistant</p>
             </div>
             <div className="flex items-center space-x-4">
@@ -182,7 +182,7 @@ function App() {
       <footer className="bg-white border-t border-gray-200 p-4">
         <div className="max-w-7xl mx-auto text-center text-sm text-gray-600">
           <p>
-            MedInsure AI &copy; 2026 | Health Insurance Made Simple |
+            Health India AI &copy; 2026 | Health Insurance Made Simple |
             <span className="ml-2">
               {mode === 'appointment' ? '📅 Appointment Booking (Chat)' : mode === 'appointment-voice' ? '🎤 Appointment Booking (Voice)' : mode === 'appointment-call' ? '📞 Appointment Booking (Call)' : mode === 'chat' ? '💬 Chat Mode' : mode === 'voice' ? '🔊 Voice Mode' : '📞 Call Mode'}
             </span>

@@ -234,7 +234,7 @@ class BookingFlowController {
 
         return {
           success: true,
-          message: "You chose home visit. Do you wish to confirm? Yes or No?",
+          message: "You chose home visit. Do you wish to confirm?",
           options: ['Yes', 'No'],
           type: 'selection',
           channelType: session.channelType,
@@ -265,7 +265,7 @@ class BookingFlowController {
 
         return {
           success: true,
-          message: "You chose diagnostic center visit. Do you wish to confirm? Yes or No?",
+          message: "You chose diagnostic center visit. Do you wish to confirm?",
           options: ['Yes', 'No'],
           type: 'selection',
           channelType: session.channelType,
@@ -352,7 +352,7 @@ class BookingFlowController {
 
       return {
         success: true,
-        message: `You chose ${selectedCenter.name}. Do you wish to confirm? Yes or No?`,
+        message: `You chose ${selectedCenter.name}. Do you wish to confirm?`,
         options: ['Yes', 'No'],
         type: 'selection',
         channelType: session.channelType,
@@ -391,7 +391,7 @@ class BookingFlowController {
       const center = getCenterById(session.selectedCenter);
       return {
         success: true,
-        message: "You've chosen " + center.name + ". It's about " + center.distance + " from you. Does that work, or would you prefer a closer center? You can just say yes or no.",
+        message: "You've chosen " + center.name + ". It's about " + center.distance + " from you. Does that work, or would you prefer a closer center?",
         options: ['Yes', 'No'],
         type: 'selection',
         channelType: session.channelType,
@@ -404,7 +404,7 @@ class BookingFlowController {
       const center = getCenterById(session.selectedCenter);
       return {
         success: true,
-        message: "Sorry, I didn't understand. Can you repeat?. " + center.name + " is about " + center.distance + " from you. Does that work for you? Just say yes or no.",
+        message: "Sorry, I didn't understand. Can you repeat?. " + center.name + " is about " + center.distance + " from you. Does that work for you?",
         options: ['Yes', 'No'],
         type: 'selection',
         channelType: session.channelType,
@@ -434,7 +434,7 @@ class BookingFlowController {
       const center = getCenterById(session.selectedCenter);
       return {
         success: true,
-        message: `Sorry, I didn't understand. Can you repeat?. Are you good with ${center.name}, or would you rather look at a different center? Just let me know yes or no.`,
+        message: `Sorry, I didn't understand. Can you repeat?. Are you good with ${center.name}, or would you rather look at a different center?`,
         options: ['Yes', 'No'],
         type: 'selection',
         channelType: session.channelType,
@@ -535,7 +535,7 @@ class BookingFlowController {
 
           return {
             success: true,
-            message: `You chose ${matchingSlot}. Do you wish to confirm? Yes or No?`,
+            message: `You chose ${matchingSlot}. Do you wish to confirm?`,
             options: ['Yes', 'No'],
             type: 'selection',
             channelType: session.channelType,
@@ -567,7 +567,7 @@ class BookingFlowController {
 
             return {
               success: true,
-              message: `You chose ${extractedTime}. Do you wish to confirm? Yes or No?`,
+              message: `You chose ${extractedTime}. Do you wish to confirm?`,
               options: ['Yes', 'No'],
               type: 'selection',
               channelType: session.channelType,
@@ -620,7 +620,7 @@ class BookingFlowController {
 
           return {
             success: true,
-            message: `You chose ${extractedTime}. Do you wish to confirm? Yes or No?`,
+            message: `You chose ${extractedTime}. Do you wish to confirm?`,
             options: ['Yes', 'No'],
             type: 'selection',
             channelType: session.channelType,
@@ -690,7 +690,7 @@ class BookingFlowController {
 
       return {
         success: true,
-        message: `You chose ${selectedTime}. Do you wish to confirm? Yes or No?`,
+        message: `You chose ${selectedTime}. Do you wish to confirm?`,
         options: ['Yes', 'No'],
         type: 'selection',
         channelType: session.channelType,
@@ -850,20 +850,32 @@ class BookingFlowController {
       });
       return await this.processPendingAction(session, pendingData);
     } else if (isNegativeResponse) {
-      console.log(`[DEBUG] User said NO - retrying previous step`);
-      // User rejected - ask the question again
+      console.log(`[DEBUG] User said NO - ending call`);
+      // User rejected - end the call with goodbye message
       sessionManager.updateSession(session.sessionId, {
-        currentStep: previousStep,
+        currentStep: STEPS.COMPLETED,
         pendingData: null,
         previousStep: null
       });
-      return this.getRetryMessage(session, previousStep);
+      
+      const userName = session.userName || 'valued customer';
+      const message = `I understand you'd like to cancel. Your medical check-up is important for your health coverage. If you change your mind, please call us again anytime. Thank you for choosing Health India. Goodbye!`;
+      
+      return {
+        success: true,
+        message,
+        options: [],
+        type: 'confirmation',
+        channelType: session.channelType,
+        currentStep: STEPS.COMPLETED,
+        shouldEndCall: true
+      };
     } else {
       console.log(`[DEBUG] Invalid input - asking again`);
       // Invalid input - ask again
       return {
         success: true,
-        message: "I didn't catch that. Please say yes or no.",
+        message: "Sorry, I didn’t understand. Can you repeat?",
         options: ['Yes', 'No'],
         type: 'selection',
         channelType: session.channelType,
@@ -1046,7 +1058,7 @@ class BookingFlowController {
 
         return {
           success: true,
-          message: "You chose to cancel your appointment. Do you wish to confirm? Yes or No?",
+          message: "You chose to cancel your appointment. Do you wish to confirm?",
           options: ['Yes', 'No'],
           type: 'selection',
           channelType: session.channelType,
@@ -1212,7 +1224,7 @@ class BookingFlowController {
 
           return {
             success: true,
-            message: `You chose ${matchingSlot} for reschedule. Do you wish to confirm? Yes or No?`,
+            message: `You chose ${matchingSlot} for reschedule. Do you wish to confirm?`,
             options: ['Yes', 'No'],
             type: 'selection',
             channelType: session.channelType,
@@ -1255,7 +1267,7 @@ class BookingFlowController {
 
             return {
               success: true,
-              message: `You chose ${extractedTime} for reschedule. Do you wish to confirm? Yes or No?`,
+              message: `You chose ${extractedTime} for reschedule. Do you wish to confirm?`,
               options: ['Yes', 'No'],
               type: 'selection',
               channelType: session.channelType,
@@ -1329,7 +1341,7 @@ class BookingFlowController {
 
       return {
         success: true,
-        message: `You chose ${selectedTime} for reschedule. Do you wish to confirm? Yes or No?`,
+        message: `You chose ${selectedTime} for reschedule. Do you wish to confirm?`,
         options: ['Yes', 'No'],
         type: 'selection',
         channelType: session.channelType,
@@ -1366,7 +1378,7 @@ class BookingFlowController {
     const channelType = session.channelType;
     const userName = session.userName || 'valued customer';
 
-    const message = `Hi ${userName}, welcome to MedInsure! We need to get your mandatory medical check­up scheduled. Would you prefer having a doctor visit you at home, or would you rather go to a diagnostic center?`;
+    const message = `Hi ${userName}, welcome to Health India! We need to get your mandatory medical check­up scheduled. Would you prefer having a doctor visit you at home, or would you rather go to a diagnostic center?`;
 
     const options = ['Home Visit', 'Diagnostic Center Visit'];
 
@@ -1531,26 +1543,16 @@ class BookingFlowController {
     let centerAddress = null;
     
     if (session.selectedFlow === FLOW_TYPES.HOME) {
-      message += ` A medical professional will visit you at your home tomorrow at ${session.selectedTime}.`;
+      message += ` For your home visit, please make sure you're available at your residence at the scheduled time for the blood test, whether fasting or non-fasting as advised. Also, kindly keep your ID proof and insurance policy card ready for verification.\n\n`;
+      message += `Our medical professional will contact you 30 minutes prior to arrival.\n\n`;
     } else {
       const center = getCenterById(session.selectedCenter);
       centerName = center.name;
       centerAddress = center.address;
-      message += ` Your appointment is confirmed at ${center.name} tomorrow at ${session.selectedTime}.`;
+      message += ` For a center visit, please ensure you arrive at the lab atleast 10 minutes before your scheduled appointment time for your blood test, whether fasting or non-fasting as advised. Also, kindly keep your ID proof and insurance policy card ready for verification.\n\n`;
     }
 
-    message += `\n\nHere are some important instructions:\n`;
-    message += `- Please come or be present for a fasting blood test if required.\n`;
-    message += `- Keep your ID proof and insurance policy card ready.\n`;
-
-    if (session.selectedFlow === FLOW_TYPES.HOME) {
-      message += `- Our medical professional will call you 30 minutes before arrival.\n`;
-    } else {
-      message += `- Location: ${centerAddress}\n`;
-      message += `- Please arrive 10 minutes early.\n`;
-    }
-
-    message += `\nThank you for choosing MedInsure. We're committed to your health!`;
+    message += `Thank you for choosing Health India. We're committed to your health!`;
 
     // Save appointment to database
     try {
@@ -1731,7 +1733,7 @@ class BookingFlowController {
       message += `- Please arrive 10 minutes early.\n`;
     }
 
-    message += `\nThank you for choosing MedInsure. We're committed to your health!`;
+    message += `\nThank you for choosing HealthIndia. We're committed to your health!`;
 
     sessionManager.updateSession(session.sessionId, {
       currentStep: STEPS.COMPLETED
@@ -1757,7 +1759,7 @@ class BookingFlowController {
     try {
       await sqliteService.updateAppointmentStatus(appointment.id, 'cancelled');
       
-      const message = `Your appointment has been cancelled successfully. If you need to reschedule in the future, please call us again. Thank you for using MedInsure.`;
+      const message = `Your appointment has been cancelled successfully. If you need to reschedule in the future, please call us again. Thank you for using Health India.`;
 
       sessionManager.updateSession(session.sessionId, {
         currentStep: STEPS.COMPLETED
@@ -1806,7 +1808,7 @@ class BookingFlowController {
       message += `- Please arrive 10 minutes early.\n`;
     }
 
-    message += `\nThank you for choosing MedInsure. We're committed to your health!`;
+    message += `\nThank you for choosing HealthIndia. We're committed to your health!`;
 
     return {
       success: true,

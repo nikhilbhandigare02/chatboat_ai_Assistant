@@ -1,6 +1,6 @@
 @echo off
 echo ========================================
-echo  MedInsure AI - Quick Start
+echo  Health India AI - Quick Start
 echo ========================================
 echo.
 
@@ -40,7 +40,7 @@ if not exist "server\.env" (
 
 echo.
 echo ========================================
-echo Starting MedInsure AI...
+echo Starting Health India AI...
 echo ========================================
 echo.
 echo Backend will start on: http://localhost:3001

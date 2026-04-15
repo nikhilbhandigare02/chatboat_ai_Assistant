@@ -1,4 +1,4 @@
-# MedInsure AI - Setup & Run Guide
+# Health India AI - Setup & Run Guide
 
 ## 📋 Complete Setup Instructions
 
@@ -65,7 +65,7 @@ TWILIO_PHONE_NUMBER=+1234567890
 cd server
 node index.js
 ```
-Expected output: `🚀 MedInsure AI Backend running on port 3001`
+Expected output: `🚀 Health India AI Backend running on port 3001`
 
 **Terminal 2 - Frontend:**
 ```bash
@@ -88,7 +88,7 @@ npx concurrently "cd server && npm start" "npm run dev"
    - Should return: `{"status": "ok", ...}`
 
 2. **Check Frontend**: Visit http://localhost:5173
-   - Should display MedInsure AI interface
+   - Should display Health India AI interface
 
 3. **Test Chat Mode**:
    - Select a patient from dropdown
@@ -222,7 +222,7 @@ Edit system prompts in:
 
 ### Issue: Backend connection failed
 **Solution**:
-- Verify backend is running: `curl http://localhost:3001/health`
+ - Verify backend is running: `curl http://localhost:3001/health`
 - Check `.env` has correct `VITE_BACKEND_URL`
 - Disable firewall/antivirus if blocking
 

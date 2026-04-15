@@ -353,7 +353,7 @@ export const CallMode = ({ selectedPatient, allPatients }) => {
       {/* Header */}
       <div className="bg-white border-b border-gray-200 p-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-2">Phone Call Mode</h2>
-        <p className="text-gray-600">Connect with MedInsure AI via phone call</p>
+        <p className="text-gray-600">Connect with Health India AI via phone call</p>
       </div>
 
       {/* Call Interface */}

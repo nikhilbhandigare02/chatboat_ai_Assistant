@@ -9,7 +9,6 @@ const groq = new Groq({
   dangerouslyAllowBrowser: true
 });
 
-// Function definitions for Groq - REMOVED APPOINTMENT FUNCTIONS
 const functions = [
   {
     name: 'get_claim_status',
@@ -223,7 +222,7 @@ export const sendMessage = async (messages, patientContext = null) => {
   try {
     const systemMessage = {
       role: 'system',
-      content: `You are MedInsure AI, a helpful health insurance assistant for MedInsure India. You help patients with:
+      content: `You are Health India AI, a helpful health insurance assistant for Health India. You help patients with:
 - Checking claim status and history
 - Viewing payment information
 - Generating invoices

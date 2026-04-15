@@ -1,0 +1,54 @@
+{
+  "sessionId": "session_1_1776249793417",
+  "userId": "1",
+  "userName": "Amit",
+  "channelType": "call",
+  "completedAt": "2026-04-15T10:44:06.767Z",
+  "bookingDetails": {
+    "flow": "home",
+    "center": null,
+    "time": "7:00 AM"
+  },
+  "transcript": [
+    {
+      "role": "assistant",
+      "content": "Hi Amit, welcome to Health India! We need to get your mandatory medical check­up scheduled. Would you prefer having a doctor visit you at home, or would you rather go to a diagnostic center?",
+      "timestamp": "2026-04-15T10:43:13.418Z"
+    },
+    {
+      "role": "user",
+      "content": "home visit",
+      "timestamp": "2026-04-15T10:43:13.419Z"
+    },
+    {
+      "role": "assistant",
+      "content": "You chose home visit. Do you wish to confirm? Yes or No?",
+      "timestamp": "2026-04-15T10:43:14.100Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-15T10:43:24.799Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Great - a home visit it is! What time in the morning works best for you? Seven am, eight am, or nine am are available.",
+      "timestamp": "2026-04-15T10:43:25.099Z"
+    },
+    {
+      "role": "user",
+      "content": "my name",
+      "timestamp": "2026-04-15T10:43:40.354Z"
+    },
+    {
+      "role": "user",
+      "content": "7:00 a.m.",
+      "timestamp": "2026-04-15T10:43:55.621Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-15T10:44:06.583Z"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-# 🧪 MedInsure AI - Testing Guide
+ # 🧪 Health India AI - Testing Guide
 
 ## Prerequisites Checklist
 
@@ -148,7 +148,7 @@ Expected Result: "Your Gold Plan premium is ₹2,500 monthly. Next payment due A
 1. Configure Twilio webhook to `your-ngrok-url/voice`
 2. Call your Twilio number
 3. Expected flow:
-   - AI: "Welcome to MedInsure AI..."
+   - AI: "Welcome to Health India AI..."
    - You: "Check my claim status"
    - AI: Responds with claim information
    - AI: "Is there anything else?"

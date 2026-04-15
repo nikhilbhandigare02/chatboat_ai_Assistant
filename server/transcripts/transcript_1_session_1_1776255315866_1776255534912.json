@@ -1,0 +1,139 @@
+{
+  "sessionId": "session_1_1776255315866",
+  "userId": "1",
+  "userName": "Amit",
+  "channelType": "call",
+  "completedAt": "2026-04-15T12:18:54.913Z",
+  "bookingDetails": {
+    "flow": "home",
+    "center": null,
+    "time": "7:00 AM"
+  },
+  "transcript": [
+    {
+      "role": "assistant",
+      "content": "Hi Amit, welcome to Health India! We need to get your mandatory medical check­up scheduled. Would you prefer having a doctor visit you at home, or would you rather go to a diagnostic center?",
+      "timestamp": "2026-04-15T12:15:15.869Z"
+    },
+    {
+      "role": "user",
+      "content": "home visit",
+      "timestamp": "2026-04-15T12:15:15.870Z"
+    },
+    {
+      "role": "assistant",
+      "content": "You chose home visit. Do you wish to confirm? Yes or No?",
+      "timestamp": "2026-04-15T12:15:16.108Z"
+    },
+    {
+      "role": "user",
+      "content": "No.",
+      "timestamp": "2026-04-15T12:15:30.554Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Hi Amit, welcome to Health India! We need to get your mandatory medical check­up scheduled. Would you prefer having a doctor visit you at home, or would you rather go to a diagnostic center?",
+      "timestamp": "2026-04-15T12:15:30.808Z"
+    },
+    {
+      "role": "user",
+      "content": "Amit Kumar",
+      "timestamp": "2026-04-15T12:15:50.178Z"
+    },
+    {
+      "role": "assistant",
+      "content": "I can help you schedule your mandatory medical check­up. Would you like a doctor to visit your home, or would you prefer to go to a diagnostic center?",
+      "timestamp": "2026-04-15T12:15:51.406Z"
+    },
+    {
+      "role": "user",
+      "content": "plastic centre",
+      "timestamp": "2026-04-15T12:16:05.655Z"
+    },
+    {
+      "role": "assistant",
+      "content": "I can help you schedule your mandatory medical check­up. Would you like a doctor to visit your home, or would you prefer to go to a diagnostic center?",
+      "timestamp": "2026-04-15T12:16:07.075Z"
+    },
+    {
+      "role": "user",
+      "content": "Diagnostic Centre",
+      "timestamp": "2026-04-15T12:16:23.571Z"
+    },
+    {
+      "role": "assistant",
+      "content": "You chose diagnostic center visit. Do you wish to confirm? Yes or No?",
+      "timestamp": "2026-04-15T12:16:23.880Z"
+    },
+    {
+      "role": "user",
+      "content": "No.",
+      "timestamp": "2026-04-15T12:16:38.846Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Hi Amit, welcome to Health India! We need to get your mandatory medical check­up scheduled. Would you prefer having a doctor visit you at home, or would you rather go to a diagnostic center?",
+      "timestamp": "2026-04-15T12:16:39.076Z"
+    },
+    {
+      "role": "user",
+      "content": "home",
+      "timestamp": "2026-04-15T12:16:57.149Z"
+    },
+    {
+      "role": "assistant",
+      "content": "You chose home visit. Do you wish to confirm? Yes or No?",
+      "timestamp": "2026-04-15T12:16:57.653Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-15T12:17:13.351Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Great - a home visit it is! What time in the morning works best for you? Seven am, eight am, or nine am are available.",
+      "timestamp": "2026-04-15T12:17:14.322Z"
+    },
+    {
+      "role": "user",
+      "content": "7",
+      "timestamp": "2026-04-15T12:17:35.347Z"
+    },
+    {
+      "role": "user",
+      "content": "No.",
+      "timestamp": "2026-04-15T12:17:50.521Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Great - a home visit it is! What time in the morning works best for you? Seven am, eight am, or nine am are available.",
+      "timestamp": "2026-04-15T12:17:50.768Z"
+    },
+    {
+      "role": "user",
+      "content": "10",
+      "timestamp": "2026-04-15T12:18:09.625Z"
+    },
+    {
+      "role": "user",
+      "content": "No.",
+      "timestamp": "2026-04-15T12:18:25.800Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Great - a home visit it is! What time in the morning works best for you? Seven am, eight am, or nine am are available.",
+      "timestamp": "2026-04-15T12:18:25.950Z"
+    },
+    {
+      "role": "user",
+      "content": "740",
+      "timestamp": "2026-04-15T12:18:39.608Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-15T12:18:54.756Z"
+    }
+  ]
+}

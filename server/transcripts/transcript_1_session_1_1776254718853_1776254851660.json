@@ -1,0 +1,94 @@
+{
+  "sessionId": "session_1_1776254718853",
+  "userId": "1",
+  "userName": "Amit",
+  "channelType": "call",
+  "completedAt": "2026-04-15T12:07:31.660Z",
+  "bookingDetails": {
+    "flow": "center",
+    "center": 2,
+    "time": "7:00 AM"
+  },
+  "transcript": [
+    {
+      "role": "assistant",
+      "content": "Hi Amit, welcome to Health India! We need to get your mandatory medical check­up scheduled. Would you prefer having a doctor visit you at home, or would you rather go to a diagnostic center?",
+      "timestamp": "2026-04-15T12:05:18.860Z"
+    },
+    {
+      "role": "user",
+      "content": "omitted",
+      "timestamp": "2026-04-15T12:05:18.863Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Sorry, I didn't understand. Can you repeat?. Could you tell me again - would you prefer a doctor to visit you at home, or would you rather go to a diagnostic center?",
+      "timestamp": "2026-04-15T12:05:19.210Z"
+    },
+    {
+      "role": "user",
+      "content": "music",
+      "timestamp": "2026-04-15T12:05:36.078Z"
+    },
+    {
+      "role": "assistant",
+      "content": "I can help you schedule your mandatory medical check­up. Would you like a doctor to visit your home, or would you prefer to go to a diagnostic center?",
+      "timestamp": "2026-04-15T12:05:36.367Z"
+    },
+    {
+      "role": "user",
+      "content": "domestic centre",
+      "timestamp": "2026-04-15T12:05:51.456Z"
+    },
+    {
+      "role": "assistant",
+      "content": "You chose diagnostic center visit. Do you wish to confirm? Yes or No?",
+      "timestamp": "2026-04-15T12:05:52.098Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-15T12:06:08.268Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Here are a few nearby options: HealthCare Diagnostic Center (5 km), City Lab Diagnostics (2 km), and MedPlus Lab (1.5 km). Which one feels right for you?",
+      "timestamp": "2026-04-15T12:06:08.443Z"
+    },
+    {
+      "role": "user",
+      "content": "kids near to me",
+      "timestamp": "2026-04-15T12:06:28.849Z"
+    },
+    {
+      "role": "assistant",
+      "content": "You chose City Lab Diagnostics. Do you wish to confirm? Yes or No?",
+      "timestamp": "2026-04-15T12:06:29.440Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-15T12:06:42.859Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Perfect - we'll get you set up at City Lab Diagnostics. What time in the morning works best for you? Seven am, eight am, or nine am are available.",
+      "timestamp": "2026-04-15T12:06:43.168Z"
+    },
+    {
+      "role": "user",
+      "content": "I am",
+      "timestamp": "2026-04-15T12:07:01.277Z"
+    },
+    {
+      "role": "user",
+      "content": "78",
+      "timestamp": "2026-04-15T12:07:16.145Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-15T12:07:31.404Z"
+    }
+  ]
+}

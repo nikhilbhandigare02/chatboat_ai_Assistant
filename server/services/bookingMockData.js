@@ -15,9 +15,9 @@ export const DIAGNOSTIC_CENTERS = [
   {
     id: 1,
     name: 'HealthCare Diagnostic Center',
-    address: '123 Medical Plaza, Downtown',
-    distance: '5 km',
-    isFar: true // Slightly far from typical location
+    address: '123 Medical Plaza, Downtown', 
+    distance:  '5 km',
+    isFar: true
   },
   {
     id: 2,

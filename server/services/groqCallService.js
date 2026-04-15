@@ -209,7 +209,7 @@ export const handleVoiceChat = async (userInput, callSid, patientContext = {}) =
 
     const systemMessage = {
       role: 'system',
-      content: `You are MedInsure AI, a voice assistant for health insurance. You're on a phone call.
+      content: `You are Health India AI, a voice assistant for health insurance. You're on a phone call.
 
 IMPORTANT VOICE GUIDELINES:
 - Keep responses SHORT (2-3 sentences max)
@@ -288,7 +288,7 @@ Help with appointments, claims, payments, and questions.`
   } catch (error) {
     console.error('Groq API Error:', error);
     return {
-      message: "I'm sorry, I can only help you with booking your medical appointment. I'm here to assist you with scheduling your mandatory medical check-up through MedInsure.",
+      message: "I'm sorry, I can only help you with booking your medical appointment. I'm here to assist you with scheduling your mandatory medical check-up through Health India.",
       error: error.message
     };
   }

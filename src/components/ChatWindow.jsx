@@ -21,7 +21,7 @@ export const ChatWindow = ({ messages, isTyping }) => {
             </svg>
           </div>
           <h3 className="text-xl font-semibold text-gray-700 mb-2">
-            Welcome to MedInsure AI
+            Welcome to Health India AI
           </h3>
           <p className="text-gray-500 max-w-md">
             I'm here to help you with appointments, claims, payments, and answer your insurance questions.

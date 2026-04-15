@@ -1,0 +1,99 @@
+{
+  "sessionId": "session_1_1776251613940",
+  "userId": "1",
+  "userName": "Amit",
+  "channelType": "call",
+  "completedAt": "2026-04-15T11:16:04.196Z",
+  "bookingDetails": {
+    "flow": "center",
+    "center": 3,
+    "time": "8:00 AM"
+  },
+  "transcript": [
+    {
+      "role": "assistant",
+      "content": "Hi Amit, welcome to HealthIndia! We need to get your mandatory medical check­up scheduled. Would you prefer having a doctor visit you at home, or would you rather go to a diagnostic center?",
+      "timestamp": "2026-04-15T11:13:33.945Z"
+    },
+    {
+      "role": "user",
+      "content": "centre",
+      "timestamp": "2026-04-15T11:13:33.946Z"
+    },
+    {
+      "role": "assistant",
+      "content": "You chose diagnostic center visit. Do you wish to confirm? Yes or No?",
+      "timestamp": "2026-04-15T11:13:34.228Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-15T11:13:46.527Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Here are a few nearby options: HealthCare Diagnostic Center (5 km), City Lab Diagnostics (2 km), and MedPlus Lab (1.5 km). Which one feels right for you?",
+      "timestamp": "2026-04-15T11:13:48.302Z"
+    },
+    {
+      "role": "user",
+      "content": "Susner to me.",
+      "timestamp": "2026-04-15T11:14:08.716Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Sorry, I didn't understand. Can you repeat?. We've got HealthCare, City Lab, or MedPlus available - which one works better for you?",
+      "timestamp": "2026-04-15T11:14:09.022Z"
+    },
+    {
+      "role": "user",
+      "content": "here to me",
+      "timestamp": "2026-04-15T11:14:25.822Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Sorry, I didn't understand. Can you repeat?. We've got HealthCare, City Lab, or MedPlus available - which one works better for you?",
+      "timestamp": "2026-04-15T11:14:26.849Z"
+    },
+    {
+      "role": "user",
+      "content": "Select near to me.",
+      "timestamp": "2026-04-15T11:14:43.640Z"
+    },
+    {
+      "role": "assistant",
+      "content": "You chose MedPlus Lab. Do you wish to confirm? Yes or No?",
+      "timestamp": "2026-04-15T11:14:44.134Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes, yes.",
+      "timestamp": "2026-04-15T11:14:59.216Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Perfect - we'll get you set up at MedPlus Lab. What time in the morning works best for you? Seven am, eight am, or nine am are available.",
+      "timestamp": "2026-04-15T11:14:59.386Z"
+    },
+    {
+      "role": "user",
+      "content": "my name",
+      "timestamp": "2026-04-15T11:15:16.004Z"
+    },
+    {
+      "role": "user",
+      "content": "ATM",
+      "timestamp": "2026-04-15T11:15:32.393Z"
+    },
+    {
+      "role": "user",
+      "content": "8:00 a.m.",
+      "timestamp": "2026-04-15T11:15:47.412Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes, yes.",
+      "timestamp": "2026-04-15T11:16:04.024Z"
+    }
+  ]
+}

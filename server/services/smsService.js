@@ -143,7 +143,7 @@ class SMSService {
     }
     
     message += `\n\nFor any queries, please contact our helpline.\n`;
-    message += `Thank you for choosing MedInsure!`;
+    message += `Thank you for choosing HealthIndia!`;
     
     return message;
   }
@@ -174,7 +174,7 @@ class SMSService {
       const formattedPhone = this.formatPhoneNumber(toPhoneNumber);
       
       const message = await this.client.messages.create({
-        body: 'This is a test SMS from MedInsure Appointment System. If you receive this, SMS service is working correctly.',
+        body: 'This is a test SMS from Health India Appointment System. If you receive this, SMS service is working correctly.',
         from: this.twilioPhoneNumber,
         to: formattedPhone
       });

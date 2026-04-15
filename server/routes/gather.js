@@ -37,7 +37,7 @@ router.post('/', async (req, res) => {
 
       if (currentAttempts >= 1) {
         // Second attempt - hang up
-        const byeMessage = 'I understand you may be busy. Thank you for calling MedInsure. Goodbye!';
+        const byeMessage = 'I understand you may be busy. Thank you for calling Health India. Goodbye!';
         const byeAudioUrl = await twilioTTSHelper.generateAudioURL(byeMessage);
         twiml.play(byeAudioUrl);
         twiml.hangup();
@@ -99,7 +99,7 @@ router.post('/', async (req, res) => {
         // Normal flow - start session and check for appointments
         const startResult = await bookingFlowController.startSession(userId, 'call');
         if (!startResult.success) {
-          const errorMessage = "I'm sorry, I can only help you with booking your medical appointment. I'm here to assist you with scheduling your mandatory medical check-up through MedInsure.";
+          const errorMessage = "I'm sorry, I can only help you with booking your medical appointment. I'm here to assist you with scheduling your mandatory medical check-up through Health India.";
           const errorAudioUrl = await twilioTTSHelper.generateAudioURL(errorMessage);
           twiml.play(errorAudioUrl);
           twiml.hangup();
@@ -154,7 +154,7 @@ router.post('/', async (req, res) => {
       twiml.play(responseAudioUrl);
 
       if (response.type === 'confirmation') {
-        const confirmMessage = 'Thank you for using MedInsure. Goodbye!';
+        const confirmMessage = 'Thank you for using Health India. Goodbye!';
         const confirmAudioUrl = await twilioTTSHelper.generateAudioURL(confirmMessage);
         twiml.play(confirmAudioUrl);
         twiml.hangup();
@@ -179,7 +179,7 @@ router.post('/', async (req, res) => {
       gather.play(optionsAudioUrl);
     } else {
       // Goodbye if no options (shouldn't reach here due to confirmation check above)
-      const goodbyeMessage = 'Thank you for calling MedInsure. Have a great day!';
+      const goodbyeMessage = 'Thank you for calling Health India. Have a great day!';
       const goodbyeAudioUrl = await twilioTTSHelper.generateAudioURL(goodbyeMessage);
       twiml.play(goodbyeAudioUrl);
       twiml.hangup();
@@ -187,7 +187,7 @@ router.post('/', async (req, res) => {
   } catch (error) {
     console.error('Error processing speech:', error);
 
-    const errorMessage = "I'm sorry, I can only help you with booking your medical appointment. I'm here to assist you with scheduling your mandatory medical check-up through MedInsure.";
+    const errorMessage = "I'm sorry, I can only help you with booking your medical appointment. I'm here to assist you with scheduling your mandatory medical check-up through Health India.";
     const errorAudioUrl = await twilioTTSHelper.generateAudioURL(errorMessage);
     twiml.play(errorAudioUrl);
     twiml.hangup();

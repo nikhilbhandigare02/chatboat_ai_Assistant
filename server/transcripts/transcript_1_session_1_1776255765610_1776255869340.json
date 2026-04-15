@@ -1,0 +1,79 @@
+{
+  "sessionId": "session_1_1776255765610",
+  "userId": "1",
+  "userName": "Amit",
+  "channelType": "call",
+  "completedAt": "2026-04-15T12:24:29.340Z",
+  "bookingDetails": {
+    "flow": "center",
+    "center": 3,
+    "time": "7:00 AM"
+  },
+  "transcript": [
+    {
+      "role": "assistant",
+      "content": "Hi Amit, welcome to Health India! We need to get your mandatory medical check­up scheduled. Would you prefer having a doctor visit you at home, or would you rather go to a diagnostic center?",
+      "timestamp": "2026-04-15T12:22:45.613Z"
+    },
+    {
+      "role": "user",
+      "content": "clinic visit",
+      "timestamp": "2026-04-15T12:22:45.614Z"
+    },
+    {
+      "role": "assistant",
+      "content": "You chose diagnostic center visit. Do you wish to confirm? Yes or No?",
+      "timestamp": "2026-04-15T12:22:46.128Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-15T12:23:01.147Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Here are a few nearby options: HealthCare Diagnostic Center (5 km), City Lab Diagnostics (2 km), and MedPlus Lab (1.5 km). Which one feels right for you?",
+      "timestamp": "2026-04-15T12:23:02.326Z"
+    },
+    {
+      "role": "user",
+      "content": "nearby",
+      "timestamp": "2026-04-15T12:23:22.174Z"
+    },
+    {
+      "role": "assistant",
+      "content": "You chose MedPlus Lab. Do you wish to confirm? Yes or No?",
+      "timestamp": "2026-04-15T12:23:22.583Z"
+    },
+    {
+      "role": "user",
+      "content": "Kundan",
+      "timestamp": "2026-04-15T12:23:36.940Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Sorry, I didn’t understand. Can you repeat?",
+      "timestamp": "2026-04-15T12:23:37.104Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-15T12:23:54.103Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Perfect - we'll get you set up at MedPlus Lab. What time in the morning works best for you? Seven am, eight am, or nine am are available.",
+      "timestamp": "2026-04-15T12:23:54.435Z"
+    },
+    {
+      "role": "user",
+      "content": "7 mm",
+      "timestamp": "2026-04-15T12:24:16.173Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-15T12:24:28.732Z"
+    }
+  ]
+}

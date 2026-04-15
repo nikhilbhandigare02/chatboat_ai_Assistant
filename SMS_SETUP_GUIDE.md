@@ -99,7 +99,7 @@ Please ensure:
 - Fasting may be required for blood tests
 
 For any queries, please contact our helpline.
-Thank you for choosing MedInsure!
+Thank you for choosing HealthIndia!
 ```
 
 ### Home Visit Appointment
@@ -115,7 +115,7 @@ Please ensure:
 - Fasting may be required for blood tests
 
 For any queries, please contact our helpline.
-Thank you for choosing MedInsure!
+Thank you for choosing HealthIndia!
 ```
 
 ## Phone Number Format

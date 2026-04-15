@@ -5,7 +5,7 @@ We've successfully replaced the full-stack insurance application with a focused 
 
 ## Key Implementation Details
 
-### Architecture
+### Architecture   
 - **Backend**: Express.js with state machine flow controller
 - **Frontend**: React with mode-based UI (switched to "appointment" mode by default)
 - **Sessions**: In-memory session manager with auto-cleanup

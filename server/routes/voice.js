@@ -41,7 +41,7 @@ router.post('/', async (req, res) => {
       // No existing appointments - normal booking flow
       const greeting = patientName
         ? `Welcome ${patientName}!`
-        : 'Welcome to MedInsure AI.';
+        : 'Welcome to Health India AI.';
       
       const greetingAudioUrl = await twilioTTSHelper.generateAudioURL(greeting);
       twiml.play(greetingAudioUrl);

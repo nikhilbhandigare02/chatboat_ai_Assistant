@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🔍 MedInsure AI - Setup Verification Script"
+echo "🔍 Health India AI - Setup Verification Script"
 echo "============================================"
 echo ""
 
