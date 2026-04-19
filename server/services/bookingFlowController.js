@@ -31,7 +31,7 @@ class BookingFlowController {
   /**
    * Start a new booking session
    */
-  async startSession(userId, channelType = 'chat') {
+  async startSession(userId, channelType = 'chat', language = 'en') {
     // Validate user
     const user = getUserById(userId);
     if (!user) {
@@ -44,6 +44,7 @@ class BookingFlowController {
 
     const sessionId = sessionManager.createSession(userId, channelType);
     const session = sessionManager.getSession(sessionId);
+    session.language = language;
 
     // Update with user name
     sessionManager.updateSession(sessionId, { userName: user.name });

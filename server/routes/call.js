@@ -34,7 +34,7 @@ router.get('/number', (req, res) => {
 
 // Initiate outbound call
 router.post('/initiate', async (req, res) => {
-  const { to, patient } = req.body;
+  const { to, patient, language = 'en' } = req.body;
 
   console.log('📞 /call/initiate endpoint called');
   console.log('   twilioClient status:', twilioClient ? 'INITIALIZED ✅' : 'NULL ❌');
@@ -62,11 +62,12 @@ router.post('/initiate', async (req, res) => {
     console.log('Creating call with:', {
       to,
       from: process.env.TWILIO_PHONE_NUMBER,
-      patient
+      patient,
+      language
     });
 
     const call = await twilioClient.calls.create({
-      url: `${process.env.SERVER_URL || 'http://localhost:3001'}/voice?patientName=${encodeURIComponent(patient?.name || '')}&policyId=${encodeURIComponent(patient?.policyId || '')}`,
+      url: `${process.env.SERVER_URL || 'http://localhost:3001'}/voice?patientName=${encodeURIComponent(patient?.name || '')}&policyId=${encodeURIComponent(patient?.policyId || '')}&language=${encodeURIComponent(language)}`,
       to: to,
       from: process.env.TWILIO_PHONE_NUMBER,
       record: true

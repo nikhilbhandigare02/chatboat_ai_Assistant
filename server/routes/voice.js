@@ -1,4 +1,5 @@
 import express from 'express';
+import { translateText } from '../services/translator.js';
 import twilio from 'twilio';
 import bookingFlowController from '../services/bookingFlowController.js';
 import twilioTTSHelper from '../services/twilioTTSHelper.js';
@@ -14,8 +15,9 @@ router.post('/', async (req, res) => {
   const patientName = req.query.patientName || req.body.patientName || '';
   const userId = req.query.userId || req.body.userId || '1'; // Default to user 1 for demo
   const callSid = req.body.CallSid || '';
+  const language = req.query.language || req.body.language || 'en';
 
-  console.log(`[VOICE] Incoming call - callSid: ${callSid}, userId: ${userId}, name: ${patientName}`);
+  console.log(`[VOICE] Incoming call - callSid: ${callSid}, userId: ${userId}, name: ${patientName}, language: ${language}`);
 
   try {
     // Check for existing appointments first
@@ -36,29 +38,35 @@ router.post('/', async (req, res) => {
         appointmentDetails = `Appointment at ${appointment.center_name} tomorrow at ${appointment.appointment_time}`;
       }
       
-      questionText = `Hi ${userName}, I see you already have an appointment set up: ${appointmentDetails}. What would you like to do with it? You can reschedule, keep it as is, or cancel it.`;
+      questionText = await translateText(`Hi ${userName}, I see you already have an appointment set up: ${appointmentDetails}. What would you like to do with it? You can reschedule, keep it as is, or cancel it.`, language);
     } else {
       // No existing appointments - normal booking flow
       const greeting = patientName
         ? `Welcome ${patientName}!`
         : 'Welcome to Health India AI.';
-      
-      const greetingAudioUrl = await twilioTTSHelper.generateAudioURL(greeting);
+      const translatedGreeting = await translateText(greeting, language);
+
+      const greetingAudioUrl = await twilioTTSHelper.generateAudioURL(translatedGreeting, language);
       twiml.play(greetingAudioUrl);
-      
-      questionText = 'How can I help you today? Would you prefer having a doctor visit you at home, or would you rather go to a diagnostic center?';
+
+      questionText = await translateText('How can I help you today? Would you prefer having a doctor visit you at home, or would you rather go to a diagnostic center?', language);
     }
 
-    const questionAudioUrl = await twilioTTSHelper.generateAudioURL(questionText);
+    const questionAudioUrl = await twilioTTSHelper.generateAudioURL(questionText, language);
 
     // Gather speech input
     const hasExistingAppointment = existingAppointments.success && existingAppointments.appointments.length > 0;
+    
+    let recognitionLanguage = 'en-IN';
+    if (language === 'hi') recognitionLanguage = 'hi-IN';
+    if (language === 'mr') recognitionLanguage = 'mr-IN';
+
     const gatherParams = {
       input: 'speech',
-      action: `/voice/gather?userId=${encodeURIComponent(userId)}&patientName=${encodeURIComponent(patientName)}&callSid=${encodeURIComponent(callSid)}&hasExistingAppointment=${encodeURIComponent(hasExistingAppointment)}`,
+      action: `/voice/gather?userId=${encodeURIComponent(userId)}&patientName=${encodeURIComponent(patientName)}&callSid=${encodeURIComponent(callSid)}&hasExistingAppointment=${encodeURIComponent(hasExistingAppointment)}&language=${encodeURIComponent(language)}`,
       method: 'POST',
       speechTimeout: 'auto',
-      language: 'en-IN',
+      language: recognitionLanguage,
       enhanced: true
     };
 
@@ -72,6 +80,17 @@ router.post('/', async (req, res) => {
     res.send(twiml.toString());
   } catch (error) {
     console.error('Error in voice route:', error);
+
+    try {
+      const errorMessage = await translateText('I apologize, but I encountered an error. Please try again later.', language);
+      const errorAudioUrl = await twilioTTSHelper.generateAudioURL(errorMessage, language);
+      const twiml = new VoiceResponse();
+      twiml.play(errorAudioUrl);
+      twiml.hangup();
+      res.type('text/xml');
+      res.send(twiml.toString());
+      return;
+    } catch(err) {}
 
     const twiml = new VoiceResponse();
     twiml.say(

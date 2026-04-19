@@ -14,10 +14,10 @@ if (!fs.existsSync(AUDIO_DIR)) {
 }
 
 class TwilioTTSHelper {
-  async generateAudioURL(text) {
+  async generateAudioURL(text, lang = 'en') {
     try {
       // Generate audio using Azure TTS
-      const audioBuffer = await azureTTS.synthesizeSpeech(text);
+      const audioBuffer = await azureTTS.synthesizeSpeech(text, lang);
 
       // Create a unique filename
       const filename = `audio_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.mp3`;

@@ -28,8 +28,13 @@ function getGroqClient() {
  */
 function fallbackPatternMatching(userInput, currentStep) {
   const input = userInput.toString().toLowerCase().trim();
-  
+
   switch (currentStep) {
+    case 'voice_confirmation':
+      if (input.match(/yes|yeah|yep|sure|ok|हां|होय|जी|सही|correct/i)) return 'yes';
+      if (input.match(/no|nope|cancel|नहीं|नाही|गलत|wrong/i)) return 'no';
+      return 'incomplete';
+
     case 'existing_appointment_check':
       // Reschedule patterns
       if (input.includes('reschedule') || input.includes('change') || input.includes('modify') || 
@@ -176,7 +181,11 @@ export async function extractIntent(userInput, currentStep, context = {}) {
  * Creates dynamic system prompts based on context
  */
 function createDynamicSystemPrompt(currentStep, context) {
-  const basePrompt = `You are an intelligent assistant that extracts user intent from natural language. 
+const langInstruction = context.language && context.language !== 'en' 
+    ? `\nThe user is speaking in ${context.language === 'hi' ? 'Hindi' : 'Marathi'}. Translate and understand their intent in English. ` 
+    : '';
+
+  const basePrompt = `You are an intelligent assistant that extracts user intent from natural language.${langInstruction}
 Analyze the user's input semantically - understand the meaning and intent, not just keywords.
 Be flexible and handle various ways users might express the same intent.
 Respond with ONLY the specified output format - no extra text or explanations.`;
@@ -480,7 +489,18 @@ INCOMPLETE INPUT EXAMPLES (respond "incomplete"):
 - "I would" → "incomplete" (incomplete phrase)
 - "I need" → "incomplete" (incomplete phrase)
 - "I'd like" → "incomplete" (incomplete phrase)`;
+    case 'voice_confirmation':
+      return `${basePrompt}
 
+  CONTEXT: User is confirming or rejecting an action they just chose.
+  Are they confirming (YES) or rejecting (NO)?
+  Words like "हां", "हाँ सही है", "yes", "correct", "हो", "होय", "ok" mean YES.
+  Words like "नहीं", "नाही", "गलत", "wrong", "no", "cancel" mean NO.
+
+  OUTPUT FORMAT: Respond with ONLY:
+  - "yes" for positive confirmation
+  - "no" for negative confirmation
+  - "incomplete" for unclear or incomplete input`;
     case 'distance_confirmation':
       return `${basePrompt}
       

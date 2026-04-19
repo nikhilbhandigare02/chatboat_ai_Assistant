@@ -14,8 +14,9 @@ export const CallMode = ({ selectedPatient, allPatients }) => {
   const [isListening, setIsListening] = useState(false); // Speech recognition state
   const [recognition, setRecognition] = useState(null); // Speech recognition instance
   const [currentTranscript, setCurrentTranscript] = useState(''); // Current speech transcript
+// ... existing CallMode code ...
+  const [selectedLanguage, setSelectedLanguage] = useState('en'); // Add language state
   const timerRef = useRef(null);
-
   const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 
   useEffect(() => {
@@ -142,6 +143,7 @@ export const CallMode = ({ selectedPatient, allPatients }) => {
         },
         body: JSON.stringify({
           to: phoneNumber,
+          language: selectedLanguage,
           patient: {
             name: selectedPatient.name,
             policyId: selectedPatient.policyId,
@@ -215,14 +217,15 @@ export const CallMode = ({ selectedPatient, allPatients }) => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            to: phoneNumber,
-            patient: {
-              name: patient.name,
-              policyId: patient.policyId,
-              plan: patient.plan
-            }
-          })
-        });
+              to: phoneNumber,
+              language: selectedLanguage, // Send selected language
+              patient: {
+                name: patient.name,
+                policyId: patient.policyId,
+                plan: patient.plan
+              }
+            })
+          });
 
         const data = await response.json();
         
@@ -357,7 +360,37 @@ export const CallMode = ({ selectedPatient, allPatients }) => {
       </div>
 
       {/* Call Interface */}
-      <div className="flex-1 flex flex-col items-center justify-center p-8 overflow-y-auto">
+      <div className="flex-1 flex flex-col items-center justify-center p-8 overflow-y-auto">          
+          {/* Language Selector */}
+          <div className="mb-6 text-center">
+            <div className="text-sm text-gray-600 mb-2">Language:</div>
+            <div className="flex gap-2 justify-center">
+              <button
+                onClick={() => setSelectedLanguage('en')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  selectedLanguage === 'en' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                English
+              </button>
+              <button
+                onClick={() => setSelectedLanguage('hi')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  selectedLanguage === 'hi' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                हिंदी
+              </button>
+              <button
+                onClick={() => setSelectedLanguage('mr')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  selectedLanguage === 'mr' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                मराठी
+              </button>
+            </div>
+          </div>
         {/* Call Mode Toggle */}
         <div className="mb-6 text-center">
           <div className="text-sm text-gray-600 mb-2">Call Mode:</div>
@@ -584,7 +617,22 @@ export const CallMode = ({ selectedPatient, allPatients }) => {
             </div>
           </div>
         )}
-
+          {/* Language Selector */}
+          {callStatus === 'idle' && (
+            <div className="mb-6 flex justify-center items-center gap-2 bg-white p-4 rounded-lg shadow-sm border border-gray-200 w-full max-w-sm mx-auto">
+              <span className="text-xl">🌐</span>
+              <label className="text-gray-700 font-medium">Select Language:</label>
+              <select
+                value={selectedLanguage}
+                onChange={(e) => setSelectedLanguage(e.target.value)}
+                className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+              >
+                <option value="en">English</option>
+                <option value="hi">हिंदी (Hindi)</option>
+                <option value="mr">मराठी (Marathi)</option>
+              </select>
+            </div>
+          )}
         {/* Twilio Number Display */}
         <div className="mb-8 text-center">
           <div className="text-sm text-gray-600 mb-2">Call our AI assistant at:</div>

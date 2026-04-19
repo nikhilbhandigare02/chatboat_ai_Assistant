@@ -27,7 +27,7 @@ class AzureTTS {
     return `https://${this.region}.tts.speech.microsoft.com/cognitiveservices/v1`;
   }
 
-  async synthesizeSpeech(text) {
+  async synthesizeSpeech(text, lang = 'en') {
     if (!this.apiKey || !this.region) {
       throw new Error('Azure Speech credentials not configured');
     }
@@ -35,10 +35,21 @@ class AzureTTS {
     if (!text || text.trim() === '') {
       throw new Error('Text is required for synthesis');
     }
+    
+    let xmlLang = 'en-IN';
+    let voiceToUse = this.voice;
+
+    if (lang === 'hi') {
+      xmlLang = 'hi-IN';
+      voiceToUse = 'hi-IN-SwaraNeural';
+    } else if (lang === 'mr') {
+      xmlLang = 'mr-IN';
+      voiceToUse = 'mr-IN-AarohiNeural';
+    }
 
     try {
-      const ssml = `<speak version='1.0' xml:lang='en-IN'>
-        <voice name='${this.voice}'>
+      const ssml = `<speak version='1.0' xml:lang='${xmlLang}'>
+        <voice name='${voiceToUse}'>
           ${this.escapeXml(text.trim())}
         </voice>
       </speak>`;
