@@ -1,0 +1,104 @@
+{
+  "sessionId": "session_1_1776681881180",
+  "userId": "1",
+  "userName": "Amit",
+  "channelType": "call",
+  "completedAt": "2026-04-20T10:47:09.188Z",
+  "bookingDetails": {
+    "flow": "center",
+    "center": 3,
+    "time": "9:00 AM"
+  },
+  "transcript": [
+    {
+      "role": "assistant",
+      "content": "Hi Amit, welcome to Health India! We need to get your mandatory medical check­up scheduled. Would you prefer having a doctor visit you at home, or would you rather go to a diagnostic center?",
+      "timestamp": "2026-04-20T10:44:41.182Z"
+    },
+    {
+      "role": "user",
+      "content": "Diagnostic Centre",
+      "timestamp": "2026-04-20T10:44:41.183Z"
+    },
+    {
+      "role": "assistant",
+      "content": "You chose diagnostic center visit. Do you wish to confirm?",
+      "timestamp": "2026-04-20T10:44:41.643Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-20T10:44:56.795Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Here are a few nearby options: HealthCare Diagnostic Center (5 km), City Lab Diagnostics (2 km), and MedPlus Lab (1.5 km). Which one feels right for you?",
+      "timestamp": "2026-04-20T10:44:57.064Z"
+    },
+    {
+      "role": "user",
+      "content": "Apollo tyre",
+      "timestamp": "2026-04-20T10:45:14.113Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Only these options are available. Please select one of them: 1 HealthCare Diagnostic Centre, 2 City Lab, 3 MedPlus Lab.",
+      "timestamp": "2026-04-20T10:45:14.870Z"
+    },
+    {
+      "role": "user",
+      "content": "Shakira",
+      "timestamp": "2026-04-20T10:45:34.465Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Only these options are available. Please select one of them: 1 HealthCare Diagnostic Centre, 2 City Lab, 3 MedPlus Lab.",
+      "timestamp": "2026-04-20T10:45:35.064Z"
+    },
+    {
+      "role": "user",
+      "content": "High School",
+      "timestamp": "2026-04-20T10:45:50.204Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Only these options are available. Please select one of them: 1 HealthCare Diagnostic Centre, 2 City Lab, 3 MedPlus Lab.",
+      "timestamp": "2026-04-20T10:45:53.088Z"
+    },
+    {
+      "role": "user",
+      "content": "MedPlus app",
+      "timestamp": "2026-04-20T10:46:07.630Z"
+    },
+    {
+      "role": "assistant",
+      "content": "You chose MedPlus Lab. Do you wish to confirm?",
+      "timestamp": "2026-04-20T10:46:08.205Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-20T10:46:17.438Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Perfect - we'll get you set up at MedPlus Lab. What time in the morning works best for you? Seven, eight, or nine AM are available.",
+      "timestamp": "2026-04-20T10:46:17.887Z"
+    },
+    {
+      "role": "user",
+      "content": "my name",
+      "timestamp": "2026-04-20T10:46:35.028Z"
+    },
+    {
+      "role": "user",
+      "content": "9:00 a.m.",
+      "timestamp": "2026-04-20T10:46:51.590Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-20T10:47:07.504Z"
+    }
+  ]
+}

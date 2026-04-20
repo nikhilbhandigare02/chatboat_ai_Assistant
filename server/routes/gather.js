@@ -163,14 +163,18 @@ router.post('/', async (req, res) => {
         const responseAudioUrl = await twilioTTSHelper.generateAudioURL(translatedResponseMsg, language);
         twiml.play(responseAudioUrl);
 
-        const confirmMessage = await translateText('Thank you for using Health India. Goodbye!', language);
-        const confirmAudioUrl = await twilioTTSHelper.generateAudioURL(confirmMessage, language);
-        twiml.play(confirmAudioUrl);
-        twiml.hangup();
-        voiceSessionMap.delete(callSid);
-        res.type('text/xml');
-        res.send(twiml.toString());
-        return;
+        const isTerminalConfirmation =
+          response.shouldEndCall === true ||
+          !response.options ||
+          response.options.length === 0;
+
+        if (isTerminalConfirmation) {
+          twiml.hangup();
+          voiceSessionMap.delete(callSid);
+          res.type('text/xml');
+          res.send(twiml.toString());
+          return;
+        }
       }
 
       // Create gather block for the user's next input
@@ -189,7 +193,13 @@ router.post('/', async (req, res) => {
       gather.play(responseAudioUrl);
 
       // Play options if they exist
-      if (response.options && response.options.length > 0) {
+      const skipOptionsAudioSteps = ['time_selection', 'reschedule_time_selection'];
+      const shouldPlayOptionsAudio =
+        response.options &&
+        response.options.length > 0 &&
+        !skipOptionsAudioSteps.includes(response.currentStep);
+
+      if (shouldPlayOptionsAudio) {
         const translatedResponseOptions = await translateText(response.options.join(' or '), language);
         const optionsAudioUrl = await twilioTTSHelper.generateAudioURL(translatedResponseOptions, language);
         gather.play(optionsAudioUrl);

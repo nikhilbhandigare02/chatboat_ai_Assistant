@@ -57,7 +57,7 @@ class TwilioTTSHelper {
   }
 }
 
-// Cleanup old audio files every 30 minutes
+// Cleanup old audio files every thirty minutes
 setInterval(() => {
   new TwilioTTSHelper().cleanupOldAudio();
 }, 30 * 60 * 1000);

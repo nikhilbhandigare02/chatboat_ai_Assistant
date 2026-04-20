@@ -241,6 +241,11 @@ ${context.centers ? context.centers.map((center, i) => `${i + 1}. ${center.name}
 
 Your task: Understand which center the user prefers using complete semantic flexibility.
 
+CRITICAL RULE:
+- Do NOT guess a center.
+- If the user input does not clearly indicate one of the 3 centers (by name, option number, position like first/second/third, or distance like closest/nearest), respond "incomplete".
+- If the user input is unrelated to choosing a center, respond "out_of_scope".
+
 ANALYSIS APPROACH:
 - Recognize ANY way user might express center preference
 - Handle questions, statements, commands, indirect requests

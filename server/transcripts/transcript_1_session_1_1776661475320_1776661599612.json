@@ -1,0 +1,124 @@
+{
+  "sessionId": "session_1_1776661475320",
+  "userId": "1",
+  "userName": "Amit",
+  "channelType": "call",
+  "completedAt": "2026-04-20T05:06:39.612Z",
+  "bookingDetails": {
+    "flow": "center",
+    "center": 2,
+    "time": "7:00 AM"
+  },
+  "transcript": [
+    {
+      "role": "assistant",
+      "content": "Hi Amit, welcome to Health India! We need to get your mandatory medical check­up scheduled. Would you prefer having a doctor visit you at home, or would you rather go to a diagnostic center?",
+      "timestamp": "2026-04-20T05:04:35.322Z"
+    },
+    {
+      "role": "user",
+      "content": "ghumne ke liye",
+      "timestamp": "2026-04-20T05:04:35.322Z"
+    },
+    {
+      "role": "assistant",
+      "content": "You chose diagnostic center visit. Do you wish to confirm?",
+      "timestamp": "2026-04-20T05:04:35.670Z"
+    },
+    {
+      "role": "user",
+      "content": "doctor",
+      "timestamp": "2026-04-20T05:04:42.830Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Sorry, I didn’t understand. Can you repeat?",
+      "timestamp": "2026-04-20T05:04:43.172Z"
+    },
+    {
+      "role": "user",
+      "content": "visit doctor",
+      "timestamp": "2026-04-20T05:04:46.680Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Sorry, I didn’t understand. Can you repeat?",
+      "timestamp": "2026-04-20T05:04:46.934Z"
+    },
+    {
+      "role": "user",
+      "content": "doctor visit",
+      "timestamp": "2026-04-20T05:04:49.188Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Sorry, I didn’t understand. Can you repeat?",
+      "timestamp": "2026-04-20T05:04:49.330Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-20T05:05:02.429Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Here are a few nearby options: HealthCare Diagnostic Center (5 km), City Lab Diagnostics (2 km), and MedPlus Lab (1.5 km). Which one feels right for you?",
+      "timestamp": "2026-04-20T05:05:02.594Z"
+    },
+    {
+      "role": "user",
+      "content": "Raju Punjabi",
+      "timestamp": "2026-04-20T05:05:13.250Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Sorry, I didn't understand. Can you repeat?. We've got HealthCare, City Lab, or MedPlus available - which one works better for you?",
+      "timestamp": "2026-04-20T05:05:13.567Z"
+    },
+    {
+      "role": "user",
+      "content": "Madhubala",
+      "timestamp": "2026-04-20T05:05:22.085Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Sorry, I didn't understand. Can you repeat?. We've got HealthCare, City Lab, or MedPlus available - which one works better for you?",
+      "timestamp": "2026-04-20T05:05:23.394Z"
+    },
+    {
+      "role": "user",
+      "content": "City care",
+      "timestamp": "2026-04-20T05:05:38.589Z"
+    },
+    {
+      "role": "assistant",
+      "content": "You chose City Lab Diagnostics. Do you wish to confirm?",
+      "timestamp": "2026-04-20T05:05:38.851Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes.",
+      "timestamp": "2026-04-20T05:05:54.250Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Perfect - we'll get you set up at City Lab Diagnostics. What time in the morning works best for you? Seven am, eight am, or nine am are available.",
+      "timestamp": "2026-04-20T05:05:54.383Z"
+    },
+    {
+      "role": "user",
+      "content": "11:00 a.m.",
+      "timestamp": "2026-04-20T05:06:13.068Z"
+    },
+    {
+      "role": "user",
+      "content": "7:00 a.m.",
+      "timestamp": "2026-04-20T05:06:26.926Z"
+    },
+    {
+      "role": "user",
+      "content": "Yes, bro.",
+      "timestamp": "2026-04-20T05:06:38.959Z"
+    }
+  ]
+}

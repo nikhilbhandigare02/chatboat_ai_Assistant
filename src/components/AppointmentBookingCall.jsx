@@ -11,6 +11,8 @@ export function AppointmentBookingCall({ selectedPatient, onSpeakResponse }) {
   const recognitionRef = useRef(null);
   const messagesEndRef = useRef(null);
   const speakFunctionRef = useRef(null);
+  const isProcessingRef = useRef(false);
+  const currentAudioRef = useRef(null);
 
   // Initialize Web Speech API
   useEffect(() => {
@@ -116,7 +118,17 @@ export function AppointmentBookingCall({ selectedPatient, onSpeakResponse }) {
 
       const audioBlob = await response.blob();
       const audioUrl = URL.createObjectURL(audioBlob);
+      if (currentAudioRef.current) {
+        try {
+          currentAudioRef.current.pause();
+        } catch (error) {
+          console.error('Audio pause error:', error);
+        }
+        currentAudioRef.current = null;
+      }
+
       const audio = new Audio(audioUrl);
+      currentAudioRef.current = audio;
       audio.play().catch(err => console.error('Audio playback error:', err));
     } catch (error) {
       console.error('Error speaking message:', error);
@@ -147,6 +159,11 @@ export function AppointmentBookingCall({ selectedPatient, onSpeakResponse }) {
     console.log('[CALL DEBUG] handleSpeechInput called with:', speechText);
     console.log('[CALL DEBUG] bookingSessionId:', bookingSessionId);
 
+    if (isProcessingRef.current) {
+      console.log('[CALL DEBUG] Ignoring speech input - already processing');
+      return;
+    }
+
     if (!bookingSessionId) {
       console.log('[CALL DEBUG] No sessionId, returning');
       return;
@@ -173,6 +190,7 @@ export function AppointmentBookingCall({ selectedPatient, onSpeakResponse }) {
       timestamp: new Date().toISOString()
     }]);
 
+    isProcessingRef.current = true;
     setIsProcessing(true);
 
     try {
@@ -200,20 +218,6 @@ export function AppointmentBookingCall({ selectedPatient, onSpeakResponse }) {
         setMessages(prev => [...prev, assistantMsg]);
 
         if (data.type === 'confirmation') {
-          if (data.bookingDetails) {
-            const details = data.bookingDetails;
-            const flowType = details.flow === 'home' ? 'Home Visit' : 'Diagnostic Center Visit';
-            const confirmationMsg = `✅ Appointment Confirmed!\nType: ${flowType}\nTime: ${details.time}\nPatient: ${details.user}`;
-            setMessages(prev => [
-              ...prev,
-              {
-                role: 'assistant',
-                content: confirmationMsg,
-                type: 'confirmation',
-                timestamp: new Date().toISOString()
-              }
-            ]);
-          }
           setCallStatus('completed');
         }
 
@@ -238,6 +242,7 @@ export function AppointmentBookingCall({ selectedPatient, onSpeakResponse }) {
       };
       setMessages(prev => [...prev, errorMsg]);
     } finally {
+      isProcessingRef.current = false;
       setIsProcessing(false);
     }
   };

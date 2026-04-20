@@ -141,7 +141,28 @@ class BookingFlowController {
         break;
 
       case STEPS.CENTER_SELECTION:
-        response = this.handleCenterSelection(session, extractedInput);
+        // Keep original flow (AI intent extraction), but prevent "random" center selection.
+        // Only accept extracted 1/2/3 if the raw user input clearly indicates a center.
+        {
+          const raw = userInput.toString().trim().toLowerCase();
+          const rawClearlyIndicatesCenter =
+            /\b(1|2|3|one|two|three|first|second|third)\b/.test(raw) ||
+            raw.includes('healthcare') ||
+            raw.includes('health care') ||
+            raw.includes('city lab') ||
+            raw.includes('city') ||
+            raw.includes('medplus') ||
+            raw.includes('med plus') ||
+            raw.includes('nearest') ||
+            raw.includes('closest');
+
+          const extractedIsCenterChoice = ['1', '2', '3'].includes(extractedInput?.toString?.());
+          const centerInputToUse = extractedIsCenterChoice && rawClearlyIndicatesCenter
+            ? extractedInput
+            : userInput;
+
+          response = this.handleCenterSelection(session, centerInputToUse);
+        }
         break;
 
       case STEPS.DISTANCE_CONFIRMATION:
@@ -176,8 +197,8 @@ class BookingFlowController {
         };
     }
 
-    // Add assistant response to transcript
-    if (response && response.message) {
+    // Add assistant response to transcript (except for confirmation messages to avoid duplication)
+    if (response && response.message && response.type !== 'confirmation') {
       session.transcript.push({
         role: 'assistant',
         content: response.message,
@@ -298,7 +319,18 @@ class BookingFlowController {
    * Handle center selection
    */
   handleCenterSelection(session, userInput) {
-    const input = userInput.toString().trim();
+    const rawInput = userInput.toString().trim();
+    const normalizedInput = rawInput.toLowerCase();
+
+    // Allow selecting by center name (useful for voice/Twilio)
+    let input = rawInput;
+    if (normalizedInput.includes('healthcare') || normalizedInput.includes('health care')) {
+      input = '1';
+    } else if (normalizedInput.includes('city') || normalizedInput.includes('city lab')) {
+      input = '2';
+    } else if (normalizedInput.includes('medplus') || normalizedInput.includes('med plus') || normalizedInput.includes('med plus lab')) {
+      input = '3';
+    }
 
     // Handle out_of_scope responses
     if (input === 'out_of_scope') {
@@ -328,7 +360,7 @@ class BookingFlowController {
       // Invalid center number - help user
       return {
         success: true,
-        message: `Sorry, I didn't understand. Can you repeat?. Which center sounds good - HealthCare, City Lab, or MedPlus?`,
+        message: `Only these options are available. Please select one of them: 1 HealthCare Diagnostic Centre, 2 City Lab, 3 MedPlus Lab.`,
         options: ['HealthCare', 'City Lab', 'MedPlus'],
         type: 'selection',
         channelType: session.channelType,
@@ -456,7 +488,7 @@ class BookingFlowController {
     if (input === 'out_of_scope') {
       return {
         success: true,
-        message: "I can help you with your booking. What time in the morning works best for you? Seven am, eight am, or nine am are available.",
+        message: "I can help you with your booking. What time in the morning works best for you? Seven, eight, or nine AM are available.",
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -468,7 +500,7 @@ class BookingFlowController {
     if (input === 'incomplete') {
       return {
         success: true,
-        message: "I didn't catch the time. Could you tell me a time in the morning that suits you — for example, seven am, eight am, or nine am?",
+        message: "I didn't catch the time. Could you tell me a time in the morning that suits you?",
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -480,7 +512,7 @@ class BookingFlowController {
     if (input === 'invalid') {
       return {
         success: true,
-        message: `That time isn’t available. Please share a time between seven and nine in the morning — for example, seven am, eight am, or nine am.`,
+        message: `That time isn’t available. Please share a time between seven and nine in the morning — for example, seven a m, eight a m, or nine a m.`,
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -586,7 +618,7 @@ class BookingFlowController {
           // Time is outside valid range
           return {
             success: true,
-            message: `I'm sorry, but "${extractedTime}" is not available. Please choose a time between 7:00 AM and 9:00 AM.`,
+            message: `I'm sorry, but "${extractedTime}" is not available. Please choose a time between 7 AM and 9 AM.`,
             options: ['7 AM', '8 AM', '9 AM'],
             type: 'selection',
             channelType: session.channelType,
@@ -639,7 +671,7 @@ class BookingFlowController {
         // Time is outside valid range
         return {
           success: true,
-          message: `I'm sorry, "${extractedTime}" won't work for us. How about sometime between 7:00 AM and 9:00 AM?`,
+          message: `I'm sorry, "${extractedTime}" won't work for us. How about sometime between 7 AM and 9 AM?`,
           options: ['7 AM', '8 AM', '9 AM'],
           type: 'selection',
           channelType: session.channelType,
@@ -656,7 +688,7 @@ class BookingFlowController {
       // Invalid input
       return {
         success: true,
-        message: `I didn’t quite catch that. Please tell me a morning time that works for you — seven am, eight am, or nine am are available.`,
+        message: `I didn’t quite catch that. Please tell me a morning time that works for you — seven, eight, or nine AM are available.`,
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -1092,7 +1124,7 @@ class BookingFlowController {
     if (input === 'out_of_scope') {
       return {
         success: true,
-        message: "I can help you reschedule. What time in the morning works better for you? Seven am, eight am, or nine am are available.",
+        message: "I can help you reschedule. What time in the morning works better for you? Seven, eight, or nine AM are available.",
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -1104,7 +1136,7 @@ class BookingFlowController {
     if (input === 'incomplete') {
       return {
         success: true,
-        message: "Sorry, I didn't understand. Can you repeat?. What time works better for you to reschedule? Seven am, eight am, or nine am are available.",
+        message: "Sorry, I didn't understand. Can you repeat?. What time works better for you to reschedule? Seven, eight, or nine AM are available.",
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -1131,7 +1163,7 @@ class BookingFlowController {
 
     return {
       success: true,
-      message: "What time would work better to reschedule your appointment to? Seven am, eight am, or nine am are available.",
+      message: "What time would work better to reschedule your appointment to? Seven, eight, or nine AM are available.",
       options: ['7 AM', '8 AM', '9 AM'],
       type: 'selection',
       channelType: session.channelType,
@@ -1151,7 +1183,7 @@ class BookingFlowController {
     if (input === 'out_of_scope') {
       return {
         success: true,
-        message: "I can help you reschedule. What time in the morning works better for you? Seven am, eight am, or nine am are available.",
+        message: "I can help you reschedule. What time in the morning works better for you? Seven, eight, or nine AM are available.",
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -1163,7 +1195,7 @@ class BookingFlowController {
     if (input === 'incomplete') {
       return {
         success: true,
-        message: "Sorry, I didn't understand. Can you repeat?. What time works better for you to reschedule? Seven am, eight am, or nine am are available.",
+        message: "Sorry, I didn't understand. Can you repeat?. What time works better for you to reschedule? Seven, eight, or nine AM are available.",
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -1175,7 +1207,7 @@ class BookingFlowController {
     if (input === 'invalid') {
       return {
         success: true,
-        message: `That time isn't available for rescheduling. Please share a time between seven and nine in the morning - for example, seven am, eight am, or nine am.`,
+        message: `That time isn't available for rescheduling. Please share a time between seven and nine in the morning - for example, seven, eight, or nine AM.`,
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -1297,7 +1329,7 @@ class BookingFlowController {
         } else {
           return {
             success: true,
-            message: `I'm sorry, but "${extractedTime}" is not available. Please choose a time between 7:00 AM and 9:00 AM.`,
+            message: `I'm sorry, but "${extractedTime}" is not available. Please choose a time between 7 AM and 9 AM.`,
             options: ['7 AM', '8 AM', '9 AM'],
             type: 'selection',
             channelType: session.channelType,
@@ -1313,7 +1345,7 @@ class BookingFlowController {
     if (isNaN(parsedInput) || parsedInput < 1 || parsedInput > 3) {
       return {
         success: true,
-        message: `Sorry, I didn't understand. Can you repeat?. Please tell me a morning time that works for you - seven am, eight am, or nine am are available.`,
+        message: `Sorry, I didn't understand. Can you repeat?. Please tell me a morning time that works for you - seven, eight, or nine AM are available.`,
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -1397,7 +1429,7 @@ class BookingFlowController {
    * Home visit time selection
    */
   getHomeVisitTimeSelection(session) {
-    const message = `Great - a home visit it is! What time in the morning works best for you? Seven am, eight am, or nine am are available.`;
+    const message = `Great - a home visit it is! What time in the morning works best for you? Seven, eight, or nine AM are available.`;
 
     return {
       success: true,
@@ -1451,7 +1483,7 @@ class BookingFlowController {
    */
   getDiagnosticCenterTimeSelection(session, center) {
     const centerName = center.name;
-    const message = `Perfect - we'll get you set up at ${centerName}. What time in the morning works best for you? Seven am, eight am, or nine am are available.`;
+    const message = `Perfect - we'll get you set up at ${centerName}. What time in the morning works best for you? Seven, eight, or nine AM are available.`;
 
     return {
       success: true,
@@ -1518,7 +1550,7 @@ class BookingFlowController {
     if (currentStep === STEPS.TIME_SELECTION) {
       return {
         success: true,
-        message: `I didn’t catch that. Please share a morning time that suits you — for example, seven am, eight am, or nine am.`,
+        message: `I didn’t catch that. Please share a morning time that suits you — for example, seven, eight, or nine AM.`,
         options: ['7 AM', '8 AM', '9 AM'],
         type: 'selection',
         channelType: session.channelType,
@@ -1545,7 +1577,7 @@ class BookingFlowController {
     
     if (session.selectedFlow === FLOW_TYPES.HOME) {
       message += ` For your home visit, please make sure you're available at your residence at the scheduled time for the blood test, whether fasting or non-fasting as advised. Also, kindly keep your ID proof and insurance policy card ready for verification.\n\n`;
-      message += `Our medical professional will contact you 30 minutes prior to arrival.\n\n`;
+      message += `Our medical professional will contact you thirty minutes prior to arrival.\n\n`;
     } else {
       const center = getCenterById(session.selectedCenter);
       centerName = center.name;
@@ -1728,7 +1760,7 @@ class BookingFlowController {
     message += `- Keep your ID proof and insurance policy card ready.\n`;
 
     if (appointment.appointment_type === 'home') {
-      message += `- Our medical professional will call you 30 minutes before arrival.\n`;
+      message += `- Our medical professional will call you thirty minutes before arrival.\n`;
     } else {
       message += `- Location: ${appointment.center_address}\n`;
       message += `- Please arrive 10 minutes early.\n`;
@@ -1803,7 +1835,7 @@ class BookingFlowController {
     message += `- Keep your ID proof and insurance policy card ready.\n`;
 
     if (oldAppointment.appointment_type === 'home') {
-      message += `- Our medical professional will call you 30 minutes before arrival.\n`;
+      message += `- Our medical professional will call you thirty minutes before arrival.\n`;
     } else {
       message += `- Location: ${oldAppointment.center_address}\n`;
       message += `- Please arrive 10 minutes early.\n`;
